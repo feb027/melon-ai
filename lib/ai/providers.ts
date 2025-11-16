@@ -129,7 +129,7 @@ export function getAvailableProviders(): AIProvider[] {
 function getProviderApiKey(providerName: string): string | undefined {
   switch (providerName) {
     case 'gemini':
-      return process.env.GOOGLE_API_KEY;
+      return process.env.GOOGLE_GENERATIVE_AI_API_KEY;
     case 'gpt4-vision':
       return process.env.OPENAI_API_KEY;
     case 'claude':
