@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { 
   LineChart, 
@@ -21,7 +21,8 @@ import {
   ResponsiveContainer,
   Cell 
 } from 'recharts';
-import { Filter, TrendingUp } from 'lucide-react';
+import { Filter, TrendingUp, Lightbulb, CheckCircle2, AlertCircle, Info } from 'lucide-react';
+import { generateInsights, type Insight } from '@/lib/analytics/insights';
 
 interface AnalyticsData {
   totalAnalyses: number;
@@ -71,6 +72,7 @@ const PIE_COLORS = [COLORS.primary, COLORS.secondary, COLORS.tertiary, COLORS.qu
 
 export default function AnalyticsPage() {
   const [data, setData] = useState<AnalyticsData | null>(null);
+  const [insights, setInsights] = useState<Insight[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState<FilterState>({
@@ -104,6 +106,12 @@ export default function AnalyticsPage() {
       }
 
       setData(result.data);
+      
+      // Generate insights from analytics data
+      if (result.data) {
+        const generatedInsights = generateInsights(result.data);
+        setInsights(generatedInsights);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Terjadi kesalahan');
     } finally {
@@ -290,6 +298,57 @@ export default function AnalyticsPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Insights & Recommendations */}
+      {insights.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Lightbulb className="h-5 w-5" />
+              Wawasan & Rekomendasi
+            </CardTitle>
+            <CardDescription>
+              Analisis otomatis berdasarkan data historis Anda
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {insights.slice(0, 5).map((insight) => {
+                // Determine icon and variant based on insight type
+                let Icon = Info;
+                let variant: 'default' | 'destructive' = 'default';
+                
+                if (insight.type === 'success') {
+                  Icon = CheckCircle2;
+                } else if (insight.type === 'warning') {
+                  Icon = AlertCircle;
+                  variant = 'destructive';
+                } else if (insight.type === 'tip') {
+                  Icon = Lightbulb;
+                }
+                
+                return (
+                  <Alert key={insight.id} variant={variant}>
+                    <Icon className="h-4 w-4" />
+                    <AlertTitle>{insight.title}</AlertTitle>
+                    <AlertDescription>
+                      <p className="mb-2">{insight.description}</p>
+                      {insight.recommendation && (
+                        <div className="mt-3 rounded-md bg-muted/50 p-3">
+                          <p className="text-sm font-medium flex items-start gap-2">
+                            <Lightbulb className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                            <span>{insight.recommendation}</span>
+                          </p>
+                        </div>
+                      )}
+                    </AlertDescription>
+                  </Alert>
+                );
+              })}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Charts Tabs */}
       <Tabs defaultValue="trends" className="space-y-4">
