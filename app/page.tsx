@@ -64,17 +64,66 @@ export default function Home() {
             <h2 className="text-lg sm:text-xl font-semibold">Cara Menggunakan</h2>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+          {/* Mobile: Compact horizontal cards */}
+          <div className="sm:hidden space-y-3">
             {/* Step 1 */}
             <Card>
-              <CardHeader className="pb-2 sm:pb-3">
-                <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 text-primary font-bold text-lg sm:text-xl mx-auto mb-1 sm:mb-2">
+              <CardContent className="flex items-center gap-3 p-4">
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 text-primary font-bold text-lg shrink-0">
                   1
                 </div>
-                <CardTitle className="text-center text-sm sm:text-base">Ambil Foto</CardTitle>
+                <div className="flex-1 text-left">
+                  <CardTitle className="text-sm mb-1">Ambil Foto</CardTitle>
+                  <CardDescription className="text-xs">
+                    Foto semangka dari atas dengan pencahayaan yang baik
+                  </CardDescription>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Step 2 */}
+            <Card>
+              <CardContent className="flex items-center gap-3 p-4">
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 text-primary font-bold text-lg shrink-0">
+                  2
+                </div>
+                <div className="flex-1 text-left">
+                  <CardTitle className="text-sm mb-1">AI Menganalisis</CardTitle>
+                  <CardDescription className="text-xs">
+                    Tunggu beberapa detik sementara AI menganalisis gambar
+                  </CardDescription>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Step 3 */}
+            <Card>
+              <CardContent className="flex items-center gap-3 p-4">
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 text-primary font-bold text-lg shrink-0">
+                  3
+                </div>
+                <div className="flex-1 text-left">
+                  <CardTitle className="text-sm mb-1">Lihat Hasil</CardTitle>
+                  <CardDescription className="text-xs">
+                    Dapatkan informasi kematangan, kemanisan, dan kualitas
+                  </CardDescription>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Desktop: Grid layout */}
+          <div className="hidden sm:grid grid-cols-3 gap-4">
+            {/* Step 1 */}
+            <Card>
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary font-bold text-xl mx-auto mb-2">
+                  1
+                </div>
+                <CardTitle className="text-center text-base">Ambil Foto</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription className="text-center text-xs sm:text-sm">
+                <CardDescription className="text-center text-sm">
                   Foto semangka dari atas dengan pencahayaan yang baik
                 </CardDescription>
               </CardContent>
@@ -82,14 +131,14 @@ export default function Home() {
 
             {/* Step 2 */}
             <Card>
-              <CardHeader className="pb-2 sm:pb-3">
-                <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 text-primary font-bold text-lg sm:text-xl mx-auto mb-1 sm:mb-2">
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary font-bold text-xl mx-auto mb-2">
                   2
                 </div>
-                <CardTitle className="text-center text-sm sm:text-base">AI Menganalisis</CardTitle>
+                <CardTitle className="text-center text-base">AI Menganalisis</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription className="text-center text-xs sm:text-sm">
+                <CardDescription className="text-center text-sm">
                   Tunggu beberapa detik sementara AI menganalisis gambar
                 </CardDescription>
               </CardContent>
@@ -97,14 +146,14 @@ export default function Home() {
 
             {/* Step 3 */}
             <Card>
-              <CardHeader className="pb-2 sm:pb-3">
-                <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 text-primary font-bold text-lg sm:text-xl mx-auto mb-1 sm:mb-2">
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary font-bold text-xl mx-auto mb-2">
                   3
                 </div>
-                <CardTitle className="text-center text-sm sm:text-base">Lihat Hasil</CardTitle>
+                <CardTitle className="text-center text-base">Lihat Hasil</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription className="text-center text-xs sm:text-sm">
+                <CardDescription className="text-center text-sm">
                   Dapatkan informasi kematangan, kemanisan, dan kualitas
                 </CardDescription>
               </CardContent>
