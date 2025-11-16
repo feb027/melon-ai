@@ -144,7 +144,11 @@ export default function CameraPage() {
           {/* Analysis Result */}
           {result && !isLoading && (
             <div className="space-y-4">
-              <AnalysisResult result={result} onRetry={handleRetry} />
+              <AnalysisResult 
+                result={result} 
+                onRetry={handleRetry}
+                onFeedback={() => {}} // Enable feedback button
+              />
               
               <div className="flex justify-center gap-4">
                 <Button onClick={handleRetry} size="lg">

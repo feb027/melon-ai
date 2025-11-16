@@ -1,7 +1,8 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
-import { Camera, Info } from 'lucide-react';
+import { Camera, Info, MessageSquare } from 'lucide-react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -14,6 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { FeedbackDialog } from '@/components/feedback-dialog';
 import type { AnalysisResultProps } from '@/lib/types';
 
 /**
@@ -35,6 +37,9 @@ import type { AnalysisResultProps } from '@/lib/types';
  * @param onFeedback - Callback for feedback submission
  */
 export function AnalysisResult({ result, onRetry, onFeedback }: AnalysisResultProps) {
+  // State for feedback dialog
+  const [feedbackDialogOpen, setFeedbackDialogOpen] = useState(false);
+  
   // Determine badge variant based on maturity status
   const maturityVariant = result.maturityStatus === 'Matang' ? 'default' : 'secondary';
   
@@ -253,21 +258,27 @@ export function AnalysisResult({ result, onRetry, onFeedback }: AnalysisResultPr
           </Button>
         )}
         
-        {/* Feedback Button (placeholder for future implementation) */}
+        {/* Feedback Button */}
         {onFeedback && (
           <Button
             variant="outline"
             size="lg"
             className="flex-1 min-h-11"
-            onClick={() => {
-              // This will be implemented in Task 25
-              console.log('Feedback feature coming soon');
-            }}
+            onClick={() => setFeedbackDialogOpen(true)}
           >
+            <MessageSquare className="mr-2 h-5 w-5" />
             Beri Feedback
           </Button>
         )}
       </CardFooter>
+      
+      {/* Feedback Dialog */}
+      <FeedbackDialog
+        open={feedbackDialogOpen}
+        onOpenChange={setFeedbackDialogOpen}
+        analysisId={result.id}
+        predictedMaturity={result.maturityStatus}
+      />
     </Card>
   );
 }
