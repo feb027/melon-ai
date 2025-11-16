@@ -116,9 +116,9 @@ Berikan analisis yang objektif dan akurat berdasarkan gambar yang diberikan.`;
 export function getAvailableProviders(): AIProvider[] {
   return aiProviders
     .filter(provider => {
-      // Check if API key is configured
+      // Check if API key is configured and not empty
       const apiKey = getProviderApiKey(provider.name);
-      return !!apiKey;
+      return !!apiKey && apiKey.trim().length > 0 && !apiKey.includes('your-') && !apiKey.includes('-here');
     })
     .sort((a, b) => a.priority - b.priority);
 }
