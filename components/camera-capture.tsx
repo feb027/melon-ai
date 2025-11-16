@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Camera, CheckCircle2, Loader2, AlertCircle, SwitchCamera, ZoomIn, ZoomOut, Maximize2 } from 'lucide-react';
+import { Camera, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import type { CameraComponentProps, AppError } from '@/lib/types';
@@ -29,14 +29,9 @@ export function CameraCapture({ onCapture, onError }: CameraComponentProps) {
   const [isCaptured, setIsCaptured] = useState(false);
   const [error, setError] = useState<AppError | null>(null);
   const [permissionState, setPermissionState] = useState<'prompt' | 'granted' | 'denied'>('prompt');
-  const [facingMode, setFacingMode] = useState<'user' | 'environment'>('environment');
-  const [zoomLevel, setZoomLevel] = useState(1);
-  const [capabilities, setCapabilities] = useState<any>(null); // Using any for zoom support
-  const [isFullscreen, setIsFullscreen] = useState(false);
   
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   /**
    * Request camera permission and start video stream
@@ -76,7 +71,7 @@ export function CameraCapture({ onCapture, onError }: CameraComponentProps) {
       // Request camera access with mobile-optimized constraints
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: {
-          facingMode: facingMode, // Use specified camera
+          facingMode: 'environment', // Use back camera on mobile
           width: { ideal: 1920 },
           height: { ideal: 1080 },
         },
@@ -85,18 +80,6 @@ export function CameraCapture({ onCapture, onError }: CameraComponentProps) {
 
       setStream(mediaStream);
       setPermissionState('granted');
-
-      // Get camera capabilities for zoom
-      const videoTrack = mediaStream.getVideoTracks()[0];
-      if (videoTrack) {
-        const trackCapabilities = videoTrack.getCapabilities() as any;
-        setCapabilities(trackCapabilities);
-        
-        // Reset zoom to default
-        if (trackCapabilities.zoom) {
-          setZoomLevel(trackCapabilities.zoom.min || 1);
-        }
-      }
 
       // Attach stream to video element
       if (videoRef.current) {
@@ -170,79 +153,6 @@ export function CameraCapture({ onCapture, onError }: CameraComponentProps) {
       videoRef.current.srcObject = null;
     }
   };
-
-  /**
-   * Switch between front and back camera
-   */
-  const switchCamera = async () => {
-    stopCamera();
-    setFacingMode(prev => prev === 'user' ? 'environment' : 'user');
-    // startCamera will be called by useEffect when facingMode changes
-  };
-
-  /**
-   * Adjust zoom level
-   */
-  const handleZoom = async (direction: 'in' | 'out') => {
-    if (!stream || !capabilities?.zoom) return;
-
-    const videoTrack = stream.getVideoTracks()[0];
-    if (!videoTrack) return;
-
-    const settings = videoTrack.getSettings() as any;
-    const currentZoom = settings.zoom || 1;
-    
-    const minZoom = capabilities.zoom.min || 1;
-    const maxZoom = capabilities.zoom.max || 3;
-    const step = capabilities.zoom.step || 0.1;
-
-    let newZoom = currentZoom;
-    if (direction === 'in') {
-      newZoom = Math.min(currentZoom + step, maxZoom);
-    } else {
-      newZoom = Math.max(currentZoom - step, minZoom);
-    }
-
-    try {
-      await videoTrack.applyConstraints({
-        advanced: [{ zoom: newZoom } as any]
-      });
-      setZoomLevel(newZoom);
-    } catch (err) {
-      console.error('Zoom error:', err);
-    }
-  };
-
-  /**
-   * Toggle fullscreen mode
-   */
-  const toggleFullscreen = async () => {
-    if (!containerRef.current) return;
-
-    try {
-      if (!document.fullscreenElement) {
-        await containerRef.current.requestFullscreen();
-        setIsFullscreen(true);
-      } else {
-        await document.exitFullscreen();
-        setIsFullscreen(false);
-      }
-    } catch (err) {
-      console.error('Fullscreen error:', err);
-    }
-  };
-
-  // Listen for fullscreen changes
-  useEffect(() => {
-    const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
-
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
-    return () => {
-      document.removeEventListener('fullscreenchange', handleFullscreenChange);
-    };
-  }, []);
 
   /**
    * Compress image to max 2MB using Canvas API
@@ -375,7 +285,7 @@ export function CameraCapture({ onCapture, onError }: CameraComponentProps) {
     }
   };
 
-  // Start camera on mount and when facingMode changes
+  // Start camera on mount
   useEffect(() => {
     startCamera();
     
@@ -383,10 +293,10 @@ export function CameraCapture({ onCapture, onError }: CameraComponentProps) {
     return () => {
       stopCamera();
     };
-  }, [facingMode]);
+  }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full h-full flex flex-col gap-4">
+    <div className="relative w-full h-full flex flex-col gap-4">
       {/* Error Alert */}
       {error && (
         <Alert variant="destructive" className="shrink-0">
@@ -420,68 +330,6 @@ export function CameraCapture({ onCapture, onError }: CameraComponentProps) {
 
         {/* Hidden Canvas for capture */}
         <canvas ref={canvasRef} className="hidden" />
-
-        {/* Camera Controls */}
-        {stream && !isCaptured && (
-          <div className="absolute top-4 right-4 flex flex-col gap-2 pointer-events-auto z-10">
-            {/* Fullscreen Toggle */}
-            <Button
-              variant="secondary"
-              size="icon"
-              className="bg-black/50 hover:bg-black/70 backdrop-blur-sm"
-              onClick={toggleFullscreen}
-              aria-label={isFullscreen ? 'Keluar fullscreen' : 'Fullscreen'}
-            >
-              <Maximize2 className="h-4 w-4 text-white" />
-            </Button>
-
-            {/* Switch Camera */}
-            <Button
-              variant="secondary"
-              size="icon"
-              className="bg-black/50 hover:bg-black/70 backdrop-blur-sm"
-              onClick={switchCamera}
-              aria-label="Ganti kamera"
-            >
-              <SwitchCamera className="h-4 w-4 text-white" />
-            </Button>
-
-            {/* Zoom Controls */}
-            {capabilities?.zoom && (
-              <>
-                <Button
-                  variant="secondary"
-                  size="icon"
-                  className="bg-black/50 hover:bg-black/70 backdrop-blur-sm"
-                  onClick={() => handleZoom('in')}
-                  disabled={zoomLevel >= (capabilities.zoom.max || 3)}
-                  aria-label="Zoom in"
-                >
-                  <ZoomIn className="h-4 w-4 text-white" />
-                </Button>
-                <Button
-                  variant="secondary"
-                  size="icon"
-                  className="bg-black/50 hover:bg-black/70 backdrop-blur-sm"
-                  onClick={() => handleZoom('out')}
-                  disabled={zoomLevel <= (capabilities.zoom.min || 1)}
-                  aria-label="Zoom out"
-                >
-                  <ZoomOut className="h-4 w-4 text-white" />
-                </Button>
-              </>
-            )}
-          </div>
-        )}
-
-        {/* Zoom Level Indicator */}
-        {stream && capabilities?.zoom && zoomLevel > 1 && (
-          <div className="absolute top-4 left-4 bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-full">
-            <p className="text-white text-xs font-medium">
-              {zoomLevel.toFixed(1)}x
-            </p>
-          </div>
-        )}
 
         {/* Guidance Overlay */}
         {stream && !isCaptured && (

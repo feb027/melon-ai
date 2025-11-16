@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -17,13 +16,11 @@ import type { AppError } from '@/lib/types';
 export default function CameraPage() {
   const router = useRouter();
   const { toast } = useToast();
-  const [capturedImage, setCapturedImage] = useState<Blob | null>(null);
 
   /**
    * Handle successful image capture
    */
   const handleCapture = (imageBlob: Blob) => {
-    setCapturedImage(imageBlob);
     
     // Show success toast
     toast({
