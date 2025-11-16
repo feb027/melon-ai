@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from 'react';
 import { Camera, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useOfflineSync } from '@/lib/hooks/use-offline-sync';
+import { addToQueue } from '@/lib/offline/db';
 import type { CameraComponentProps, AppError } from '@/lib/types';
 
 /**
@@ -19,11 +21,14 @@ import type { CameraComponentProps, AppError } from '@/lib/types';
  * - Automatic image compression (max 2MB)
  * - Error handling (permission denied, no camera, etc.)
  * - Visual feedback for successful capture
- * - Zoom in/out controls
- * - Switch between front/back camera
- * - Fullscreen mode
+ * - Offline mode support with IndexedDB queue
+ * - Automatic sync when connection is restored
+ * 
+ * Requirements: 1.1, 1.2, 1.3, 5.1, 5.2, 5.3, 5.4, 5.5, 8.2
  */
 export function CameraCapture({ onCapture, onError }: CameraComponentProps) {
+  // Offline sync hook
+  const { isOnline, refreshQueueCount } = useOfflineSync();
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isCaptured, setIsCaptured] = useState(false);
@@ -223,6 +228,7 @@ export function CameraCapture({ onCapture, onError }: CameraComponentProps) {
 
   /**
    * Capture photo from video stream
+   * Handles both online and offline modes
    */
   const capturePhoto = async () => {
     if (!videoRef.current || !canvasRef.current) return;
@@ -265,8 +271,41 @@ export function CameraCapture({ onCapture, onError }: CameraComponentProps) {
       setIsCaptured(true);
       setTimeout(() => setIsCaptured(false), 1000);
 
-      // Call onCapture callback
-      onCapture(compressedBlob);
+      // Check if offline - save to IndexedDB queue
+      if (!isOnline) {
+        console.log('[CameraCapture] Offline mode: saving to queue');
+        
+        // Add to offline queue
+        await addToQueue({
+          imageBlob: compressedBlob,
+          userId: 'default-user', // TODO: Get from auth context
+          metadata: {
+            deviceInfo: navigator.userAgent,
+          },
+          timestamp: new Date(),
+          status: 'pending',
+          retryCount: 0,
+        });
+
+        // Refresh queue count
+        await refreshQueueCount();
+
+        // Show offline notification
+        const offlineError: AppError = {
+          type: 'NETWORK_ERROR',
+          message: 'Offline mode',
+          userMessage: 'Foto disimpan. Akan diunggah saat koneksi tersedia.',
+          retryable: false,
+        };
+        
+        setError(offlineError);
+        
+        // Still call onCapture for UI updates
+        onCapture(compressedBlob);
+      } else {
+        // Online mode - proceed normally
+        onCapture(compressedBlob);
+      }
     } catch (err) {
       console.error('Capture error:', err);
       

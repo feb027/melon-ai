@@ -6,20 +6,25 @@
  * 2. AI analysis via API
  * 3. Result display with loading states
  * 4. Error handling with user-friendly messages
+ * 5. Offline mode support with IndexedDB queue
  * 
  * Features:
  * - Optimistic UI updates
  * - Loading states for each step
  * - Comprehensive error handling
  * - Toast notifications in Indonesian
+ * - Offline queue management
+ * - Automatic sync when online
  * 
- * Requirements: 1.1, 1.2, 1.3, 1.4, 2.1, 10.1
+ * Requirements: 1.1, 1.2, 1.3, 1.4, 2.1, 5.1, 5.2, 5.3, 5.4, 5.5, 10.1
  */
 
 'use client';
 
 import { useState, useCallback } from 'react';
 import { toast } from 'sonner';
+import { addToQueue } from '@/lib/offline/db';
+import { useOfflineSync } from '@/lib/hooks/use-offline-sync';
 import type { AnalysisResult, AnalysisMetadata } from '@/lib/types';
 
 // ============================================================================
@@ -60,6 +65,9 @@ export function useAnalysis(): UseAnalysisReturn {
     result: null,
     error: null,
   });
+
+  // Get offline sync status
+  const { isOnline, refreshQueueCount } = useOfflineSync();
 
   /**
    * Reset analysis state
@@ -165,6 +173,7 @@ export function useAnalysis(): UseAnalysisReturn {
 
   /**
    * Complete analysis flow: upload → analyze → display result
+   * Handles both online and offline modes
    */
   const analyzeImage = useCallback(async (
     imageBlob: Blob,
@@ -180,6 +189,54 @@ export function useAnalysis(): UseAnalysisReturn {
       error: null,
     });
 
+    // Check if offline
+    if (!isOnline) {
+      console.log('[useAnalysis] Offline mode: saving to queue');
+      
+      try {
+        // Add to offline queue
+        await addToQueue({
+          imageBlob,
+          userId,
+          metadata,
+          timestamp: new Date(),
+          status: 'pending',
+          retryCount: 0,
+        });
+
+        // Refresh queue count
+        await refreshQueueCount();
+
+        // Show offline notification
+        toast.info('Mode offline', {
+          description: 'Foto disimpan dan akan diunggah saat koneksi tersedia.',
+          duration: 5000,
+        });
+
+        // Set error state to show offline message
+        setState(prev => ({
+          ...prev,
+          error: 'Foto disimpan dalam antrian offline',
+        }));
+
+        return;
+      } catch (error) {
+        console.error('[useAnalysis] Failed to save to queue:', error);
+        
+        toast.error('Gagal menyimpan foto', {
+          description: 'Tidak dapat menyimpan foto ke antrian offline.',
+        });
+
+        setState(prev => ({
+          ...prev,
+          error: 'Gagal menyimpan foto ke antrian offline',
+        }));
+
+        return;
+      }
+    }
+
+    // Online mode - proceed with normal flow
     try {
       // Step 1: Upload image
       toast.loading('Mengunggah gambar...', { id: 'analysis-flow' });
@@ -223,7 +280,7 @@ export function useAnalysis(): UseAnalysisReturn {
 
       console.error('[useAnalysis] Error:', error);
     }
-  }, [uploadImage, analyzeImageWithAI]);
+  }, [isOnline, uploadImage, analyzeImageWithAI, refreshQueueCount]);
 
   return {
     // State
