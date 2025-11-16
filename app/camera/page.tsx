@@ -145,8 +145,7 @@ export default function CameraPage() {
           {result && !isLoading && (
             <div className="space-y-4">
               <AnalysisResult 
-                result={result} 
-                onRetry={handleRetry}
+                result={result}
                 onFeedback={() => {}} // Enable feedback button
               />
               
