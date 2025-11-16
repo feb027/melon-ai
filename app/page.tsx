@@ -189,6 +189,38 @@ export default function Home() {
         </Card>
       </section>
 
+      {/* Demo Section */}
+      <section className="w-full max-w-2xl mx-auto mt-8 px-4 pb-8">
+        <Card className="bg-muted/50">
+          <CardHeader>
+            <CardTitle className="text-center text-base sm:text-lg">Demo & Dokumentasi</CardTitle>
+            <CardDescription className="text-center">
+              Lihat demo komponen dan dokumentasi teknis
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <Button variant="outline" className="w-full" asChild>
+              <Link href="/demo/analysis-flow">
+                <Sparkles className="mr-2 h-4 w-4" />
+                Demo Alur Analisis Lengkap
+              </Link>
+            </Button>
+            <Button variant="outline" className="w-full" asChild>
+              <Link href="/demo/analysis-result">
+                <Info className="mr-2 h-4 w-4" />
+                Demo Tampilan Hasil
+              </Link>
+            </Button>
+            <Button variant="outline" className="w-full" asChild>
+              <Link href="/camera">
+                <Camera className="mr-2 h-4 w-4" />
+                Demo Kamera
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
+      </section>
+
       {/* Footer */}
       <footer className="py-4 sm:py-6 text-center text-xs sm:text-sm text-muted-foreground border-t px-4">
         <p>MelonAI © 2024 - Teknologi AI untuk Pertanian Indonesia</p>
