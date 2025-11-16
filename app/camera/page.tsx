@@ -57,24 +57,25 @@ export default function CameraPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="fixed inset-0 flex flex-col bg-background">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-background border-b">
-        <div className="container flex items-center gap-4 h-14 px-4">
+      <header className="sticky top-0 z-10 bg-background border-b shrink-0">
+        <div className="flex items-center gap-4 h-14 px-4">
           <Button
             variant="ghost"
             size="icon"
             onClick={() => router.back()}
             aria-label="Kembali"
+            className="shrink-0"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-lg font-semibold">Ambil Foto Semangka</h1>
+          <h1 className="text-base sm:text-lg font-semibold truncate">Ambil Foto Semangka</h1>
         </div>
       </header>
 
-      {/* Camera Component */}
-      <main className="flex-1 container px-4 py-6">
+      {/* Camera Component - Full height minus header */}
+      <main className="flex-1 overflow-hidden px-4 py-4 sm:py-6">
         <CameraCapture onCapture={handleCapture} onError={handleError} />
       </main>
     </div>

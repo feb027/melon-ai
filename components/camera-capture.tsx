@@ -38,6 +38,20 @@ export function CameraCapture({ onCapture, onError }: CameraComponentProps) {
       setIsLoading(true);
       setError(null);
 
+      // Check if page is served over HTTPS (required for camera access on mobile)
+      const isSecureContext = window.isSecureContext || window.location.protocol === 'https:';
+      if (!isSecureContext && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+        const err: AppError = {
+          type: 'CAMERA_ACCESS_DENIED',
+          message: 'HTTPS required for camera access',
+          userMessage: 'Akses kamera memerlukan koneksi HTTPS yang aman. Silakan akses aplikasi melalui HTTPS atau gunakan ngrok/tunneling untuk testing.',
+          retryable: false,
+        };
+        setError(err);
+        onError(err);
+        return;
+      }
+
       // Check if getUserMedia is supported
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         const err: AppError = {
@@ -279,12 +293,12 @@ export function CameraCapture({ onCapture, onError }: CameraComponentProps) {
   }, []);
 
   return (
-    <div className="relative w-full h-full flex flex-col">
+    <div className="relative w-full h-full flex flex-col gap-4">
       {/* Error Alert */}
       {error && (
-        <Alert variant="destructive" className="mb-4">
+        <Alert variant="destructive" className="shrink-0">
           <AlertCircle className="h-4 w-4" />
-          <AlertDescription>
+          <AlertDescription className="text-sm">
             {error.userMessage}
             {error.retryable && error.action && (
               <Button
@@ -301,7 +315,7 @@ export function CameraCapture({ onCapture, onError }: CameraComponentProps) {
       )}
 
       {/* Camera Preview */}
-      <div className="relative flex-1 bg-black rounded-lg overflow-hidden">
+      <div className="relative flex-1 bg-black rounded-lg overflow-hidden min-h-0">
         {/* Video Element */}
         <video
           ref={videoRef}
@@ -318,21 +332,21 @@ export function CameraCapture({ onCapture, onError }: CameraComponentProps) {
         {stream && !isCaptured && (
           <div className="absolute inset-0 pointer-events-none">
             {/* Center guide frame */}
-            <div className="absolute inset-0 flex items-center justify-center p-8">
-              <div className="w-full max-w-md aspect-square border-2 border-white/50 rounded-lg">
+            <div className="absolute inset-0 flex items-center justify-center p-4 sm:p-8">
+              <div className="w-full max-w-sm sm:max-w-md aspect-square border-2 border-white/50 rounded-lg">
                 {/* Corner markers */}
                 <div className="relative w-full h-full">
-                  <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-primary" />
-                  <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-primary" />
-                  <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-primary" />
-                  <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-primary" />
+                  <div className="absolute top-0 left-0 w-6 h-6 sm:w-8 sm:h-8 border-t-4 border-l-4 border-primary" />
+                  <div className="absolute top-0 right-0 w-6 h-6 sm:w-8 sm:h-8 border-t-4 border-r-4 border-primary" />
+                  <div className="absolute bottom-0 left-0 w-6 h-6 sm:w-8 sm:h-8 border-b-4 border-l-4 border-primary" />
+                  <div className="absolute bottom-0 right-0 w-6 h-6 sm:w-8 sm:h-8 border-b-4 border-r-4 border-primary" />
                 </div>
               </div>
             </div>
 
             {/* Instruction text */}
-            <div className="absolute bottom-24 left-0 right-0 text-center">
-              <p className="text-white text-sm font-medium bg-black/50 px-4 py-2 rounded-full inline-block">
+            <div className="absolute bottom-20 sm:bottom-24 left-0 right-0 text-center px-4">
+              <p className="text-white text-xs sm:text-sm font-medium bg-black/50 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full inline-block">
                 Posisikan semangka di dalam bingkai
               </p>
             </div>
@@ -373,17 +387,18 @@ export function CameraCapture({ onCapture, onError }: CameraComponentProps) {
 
       {/* Capture Button */}
       {stream && (
-        <div className="mt-6 flex justify-center gap-4">
+        <div className="shrink-0 flex justify-center items-center pb-safe">
           <Button
             size="lg"
-            className="min-h-16 min-w-16 rounded-full"
+            className="min-h-16 min-w-16 sm:min-h-20 sm:min-w-20 rounded-full shadow-lg"
             onClick={capturePhoto}
             disabled={isLoading || isCaptured}
+            aria-label="Ambil foto"
           >
             {isLoading ? (
-              <Loader2 className="h-6 w-6 animate-spin" />
+              <Loader2 className="h-6 w-6 sm:h-8 sm:w-8 animate-spin" />
             ) : (
-              <Camera className="h-6 w-6" />
+              <Camera className="h-6 w-6 sm:h-8 sm:w-8" />
             )}
           </Button>
         </div>
