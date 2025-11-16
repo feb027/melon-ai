@@ -64,8 +64,8 @@ export default function Home() {
             <h2 className="text-lg sm:text-xl font-semibold">Cara Menggunakan</h2>
           </div>
           
-          {/* Mobile: Compact horizontal cards */}
-          <div className="sm:hidden space-y-3">
+          {/* Mobile: Compact horizontal cards (below 768px) */}
+          <div className="md:hidden space-y-3">
             {/* Step 1 */}
             <Card>
               <CardContent className="flex items-center gap-3 p-4">
@@ -112,8 +112,8 @@ export default function Home() {
             </Card>
           </div>
 
-          {/* Desktop: Grid layout */}
-          <div className="hidden sm:grid grid-cols-3 gap-4">
+          {/* Desktop: Grid layout (768px and above) */}
+          <div className="hidden md:grid grid-cols-3 gap-4">
             {/* Step 1 */}
             <Card>
               <CardHeader className="pb-3">
