@@ -1,139 +1,149 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Progress } from "@/components/ui/progress";
+import { Skeleton } from "@/components/ui/skeleton";
+
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto py-8">
-        <main className="flex flex-col gap-8">
-          {/* Header */}
-          <div className="text-center">
-            <h1 className="text-4xl font-bold text-foreground mb-4">
-              MelonAI
-            </h1>
-            <p className="text-lg text-muted-foreground">
-              Tailwind CSS v4 Configuration Test
-            </p>
-          </div>
+    <div className="container mx-auto p-4 space-y-8 min-h-screen">
+      <main className="flex flex-col gap-8 items-center">
+        {/* Header */}
+        <div className="text-center space-y-4 py-8">
+          <h1 className="text-4xl font-bold">MelonAI</h1>
+          <p className="text-lg text-muted-foreground">
+            Sistem analisis kematangan semangka menggunakan AI
+          </p>
+          <Badge variant="outline">shadcn/ui Component Test</Badge>
+        </div>
 
-          {/* Color Test Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {/* Primary Color */}
-            <div className="bg-card border border-border rounded-lg p-6">
-              <div className="w-16 h-16 bg-primary rounded-lg mb-4"></div>
-              <h3 className="text-xl font-semibold text-card-foreground mb-2">
-                Primary (Matang)
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                Green color for ripe watermelons
-              </p>
-            </div>
+        {/* Component Testing Section */}
+        <div className="w-full max-w-4xl space-y-6">
+          {/* Button Component Test */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Button Components</CardTitle>
+              <CardDescription>Testing different button variants</CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-wrap gap-4">
+              <Button>Default Button</Button>
+              <Button variant="secondary">Secondary</Button>
+              <Button variant="destructive">Destructive</Button>
+              <Button variant="outline">Outline</Button>
+              <Button variant="ghost">Ghost</Button>
+              <Button size="lg">Large Button</Button>
+              <Button size="sm">Small</Button>
+            </CardContent>
+          </Card>
 
-            {/* Secondary Color */}
-            <div className="bg-card border border-border rounded-lg p-6">
-              <div className="w-16 h-16 bg-secondary rounded-lg mb-4"></div>
-              <h3 className="text-xl font-semibold text-card-foreground mb-2">
-                Secondary (Belum Matang)
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                Orange color for unripe watermelons
-              </p>
-            </div>
+          {/* Badge Component Test */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Badge Components</CardTitle>
+              <CardDescription>Testing badge variants for status indicators</CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-wrap gap-4">
+              <Badge>Default</Badge>
+              <Badge variant="secondary">Secondary</Badge>
+              <Badge variant="destructive">Destructive</Badge>
+              <Badge variant="outline">Outline</Badge>
+              <Badge className="bg-success text-white">Matang</Badge>
+              <Badge className="bg-warning text-white">Belum Matang</Badge>
+            </CardContent>
+          </Card>
 
-            {/* Success Color */}
-            <div className="bg-card border border-border rounded-lg p-6">
-              <div className="w-16 h-16 bg-success rounded-lg mb-4"></div>
-              <h3 className="text-xl font-semibold text-card-foreground mb-2">
-                Success
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                Success state color
-              </p>
-            </div>
+          {/* Alert Component Test */}
+          <Alert>
+            <AlertDescription>
+              Ini adalah contoh alert component untuk notifikasi penting.
+            </AlertDescription>
+          </Alert>
 
-            {/* Warning Color */}
-            <div className="bg-card border border-border rounded-lg p-6">
-              <div className="w-16 h-16 bg-warning rounded-lg mb-4"></div>
-              <h3 className="text-xl font-semibold text-card-foreground mb-2">
-                Warning
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                Warning state color
-              </p>
-            </div>
+          {/* Progress Component Test */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Progress Component</CardTitle>
+              <CardDescription>Testing progress bar for confidence levels</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>Confidence Level</span>
+                  <span>85%</span>
+                </div>
+                <Progress value={85} />
+              </div>
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>Sweetness Level</span>
+                  <span>7/10</span>
+                </div>
+                <Progress value={70} />
+              </div>
+            </CardContent>
+          </Card>
 
-            {/* Error Color */}
-            <div className="bg-card border border-border rounded-lg p-6">
-              <div className="w-16 h-16 bg-error rounded-lg mb-4"></div>
-              <h3 className="text-xl font-semibold text-card-foreground mb-2">
-                Error
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                Error state color
-              </p>
-            </div>
+          {/* Skeleton Component Test */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Skeleton Components</CardTitle>
+              <CardDescription>Testing loading states</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Skeleton className="h-12 w-full" />
+              <Skeleton className="h-24 w-full" />
+              <div className="flex gap-4">
+                <Skeleton className="h-16 w-16 rounded-full" />
+                <div className="space-y-2 flex-1">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-3/4" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-            {/* Info Color */}
-            <div className="bg-card border border-border rounded-lg p-6">
-              <div className="w-16 h-16 bg-info rounded-lg mb-4"></div>
-              <h3 className="text-xl font-semibold text-card-foreground mb-2">
-                Info
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                Info state color
-              </p>
-            </div>
-          </div>
-
-          {/* Typography Test */}
-          <div className="bg-card border border-border rounded-lg p-6">
-            <h2 className="text-2xl font-semibold text-card-foreground mb-4">
-              Typography Scale
-            </h2>
-            <div className="space-y-2">
-              <p className="text-xs text-muted-foreground">Extra Small (12px)</p>
-              <p className="text-sm text-muted-foreground">Small (14px)</p>
-              <p className="text-base text-foreground">Base (16px)</p>
-              <p className="text-lg text-foreground">Large (18px)</p>
-              <p className="text-xl text-foreground">Extra Large (20px)</p>
-              <p className="text-2xl font-semibold text-foreground">2XL (24px)</p>
-            </div>
-          </div>
-
-          {/* Button Test */}
-          <div className="bg-card border border-border rounded-lg p-6">
-            <h2 className="text-2xl font-semibold text-card-foreground mb-4">
-              Button Styles
-            </h2>
-            <div className="flex flex-wrap gap-4">
-              <button className="min-h-11 min-w-11 px-6 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:opacity-90 transition-opacity">
-                Primary Button
-              </button>
-              <button className="min-h-11 min-w-11 px-6 py-2 bg-secondary text-secondary-foreground rounded-lg font-medium hover:opacity-90 transition-opacity">
-                Secondary Button
-              </button>
-              <button className="min-h-11 min-w-11 px-6 py-2 border border-border bg-background text-foreground rounded-lg font-medium hover:bg-muted transition-colors">
-                Outline Button
-              </button>
-            </div>
-          </div>
-
-          {/* Responsive Test */}
-          <div className="bg-card border border-border rounded-lg p-6">
-            <h2 className="text-2xl font-semibold text-card-foreground mb-4">
-              Responsive Breakpoints
-            </h2>
-            <div className="space-y-2 text-sm">
-              <p className="text-foreground">
-                <span className="font-semibold">Current breakpoint:</span>
-                <span className="ml-2 xs:hidden sm:hidden md:hidden lg:hidden xl:hidden">Default (xs: 320px)</span>
-                <span className="ml-2 hidden xs:inline sm:hidden">xs (320px)</span>
-                <span className="ml-2 hidden sm:inline md:hidden">sm (375px)</span>
-                <span className="ml-2 hidden md:inline lg:hidden">md (425px)</span>
-                <span className="ml-2 hidden lg:inline xl:hidden">lg (768px)</span>
-                <span className="ml-2 hidden xl:inline">xl (1024px+)</span>
-              </p>
-            </div>
-          </div>
-        </main>
-      </div>
+          {/* Analysis Result Mock */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Hasil Analisis Semangka</CardTitle>
+              <CardDescription>Contoh tampilan hasil analisis</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">Status Kematangan:</span>
+                <Badge className="bg-success text-white">Matang</Badge>
+              </div>
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>Tingkat Kepercayaan</span>
+                  <span>92%</span>
+                </div>
+                <Progress value={92} />
+              </div>
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>Tingkat Kemanisan</span>
+                  <span>8/10</span>
+                </div>
+                <Progress value={80} />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">Jenis Semangka:</span>
+                <Badge variant="outline">Merah</Badge>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">Kualitas Kulit:</span>
+                <Badge variant="secondary">Baik</Badge>
+              </div>
+              <div className="flex gap-4 pt-4">
+                <Button className="flex-1">Foto Lagi</Button>
+                <Button variant="outline" className="flex-1">Lihat Detail</Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </main>
     </div>
   );
 }
