@@ -49,6 +49,7 @@ export interface AnalysisMetadata {
   deviceInfo?: string;
 }
 
+export type Analysis = Tables<'analyses'>;
 export type AnalysisInsert = TablesInsert<'analyses'>;
 export type AnalysisUpdate = TablesUpdate<'analyses'>;
 
