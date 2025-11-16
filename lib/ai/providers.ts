@@ -49,7 +49,7 @@ export interface AIProvider {
 export const aiProviders: AIProvider[] = [
   {
     name: 'gemini',
-    model: google('gemini-2.0-flash-exp'),
+    model: google('gemini-2.5-flash'),
     priority: 1,
     description: 'Google Gemini 2.5 Flash - Fast & cost-effective',
   },
