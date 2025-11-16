@@ -53,8 +53,8 @@ export default function AnalysisFlowDemo() {
     setCapturedImage(previewUrl);
     setShowCamera(false);
 
-    // Start analysis
-    await analyzeImage(imageBlob, userId, {
+    // Start analysis (pass empty string for demo - will be set to null in API)
+    await analyzeImage(imageBlob, '', {
       location: 'Demo Location',
       deviceInfo: navigator.userAgent,
     });

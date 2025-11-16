@@ -98,18 +98,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!userId) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: {
-            code: 'MISSING_USER_ID',
-            message: 'User ID tidak ditemukan.',
-          },
-        },
-        { status: 400 }
-      );
-    }
+    // userId is optional for demo (will be null if not provided)
+    // In production with auth, this should be required
 
     // Validate image URL format
     try {
@@ -127,8 +117,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check rate limit
-    if (checkRateLimit(userId)) {
+    // Check rate limit (skip if no userId for demo)
+    if (userId && checkRateLimit(userId)) {
       return NextResponse.json(
         {
           success: false,
@@ -191,7 +181,7 @@ export async function POST(request: NextRequest) {
     const { data: analysisData, error: dbError } = await supabase
       .from('analyses')
       .insert({
-        user_id: userId,
+        user_id: userId || null, // Allow null for demo without authentication
         image_url: imageUrl,
         image_storage_path: imageStoragePath,
         maturity_status: aiResult.maturityStatus,
