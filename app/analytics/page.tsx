@@ -21,8 +21,9 @@ import {
   ResponsiveContainer,
   Cell 
 } from 'recharts';
-import { Filter, TrendingUp, Lightbulb, CheckCircle2, AlertCircle, Info } from 'lucide-react';
+import { Filter, TrendingUp, Lightbulb, CheckCircle2, AlertCircle, Info, Download, Loader2 } from 'lucide-react';
 import { generateInsights, type Insight } from '@/lib/analytics/insights';
+import { toast } from 'sonner';
 
 interface AnalyticsData {
   totalAnalyses: number;
@@ -75,6 +76,7 @@ export default function AnalyticsPage() {
   const [insights, setInsights] = useState<Insight[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [exportLoading, setExportLoading] = useState(false);
   const [filters, setFilters] = useState<FilterState>({
     startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] || '',
     endDate: new Date().toISOString().split('T')[0] || '',
@@ -136,6 +138,50 @@ export default function AnalyticsPage() {
     });
   };
 
+  const handleExportPDF = async () => {
+    setExportLoading(true);
+
+    try {
+      const response = await fetch('/api/export/pdf', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          startDate: filters.startDate,
+          endDate: filters.endDate,
+          location: filters.location || undefined,
+          watermelonType: filters.watermelonType || undefined,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.error?.message || 'Gagal membuat PDF');
+      }
+
+      // Download the PDF
+      const link = document.createElement('a');
+      link.href = result.data.downloadUrl;
+      link.download = result.data.fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      toast.success('PDF berhasil dibuat', {
+        description: 'Laporan akan kedaluwarsa dalam 1 jam',
+      });
+    } catch (err) {
+      console.error('Export error:', err);
+      toast.error('Gagal membuat PDF', {
+        description: err instanceof Error ? err.message : 'Terjadi kesalahan',
+      });
+    } finally {
+      setExportLoading(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background p-3 space-y-3">
@@ -178,6 +224,23 @@ export default function AnalyticsPage() {
             Statistik dan tren analisis semangka
           </p>
         </div>
+        <Button 
+          onClick={handleExportPDF} 
+          disabled={exportLoading || !data}
+          className="w-full md:w-auto"
+        >
+          {exportLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Membuat PDF...
+            </>
+          ) : (
+            <>
+              <Download className="mr-2 h-4 w-4" />
+              Ekspor PDF
+            </>
+          )}
+        </Button>
       </div>
 
       {/* Filters */}
