@@ -45,7 +45,7 @@ export default function AnalysisFlowDemo() {
 
   // Mock user ID (in production, get from auth)
   // Using a valid UUID format for demo
-  const userId = '00000000-0000-0000-0000-000000000001';
+  // const userId = '00000000-0000-0000-0000-000000000001';
 
   const handleCapture = async (imageBlob: Blob) => {
     // Create preview URL
