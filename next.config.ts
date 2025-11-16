@@ -1,8 +1,9 @@
 import type { NextConfig } from "next";
+import withPWA from "next-pwa";
 
 const nextConfig: NextConfig = {
-  // Turbopack is the default bundler in Next.js 16
-  // No additional configuration needed for basic setup
+  // Turbopack configuration (empty to silence warning)
+  turbopack: {},
   
   // Enable React Strict Mode for better development experience
   reactStrictMode: true,
@@ -29,4 +30,18 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+// Configure PWA with next-pwa
+// Note: next-pwa uses webpack, so we need to use webpack mode for builds
+const pwaConfig = withPWA({
+  dest: 'public',
+  register: true,
+  skipWaiting: true,
+  disable: process.env.NODE_ENV === 'development',
+  reloadOnOnline: true,
+  fallbacks: {
+    document: '/_offline',
+  },
+  disableDevLogs: true,
+});
+
+export default pwaConfig(nextConfig);

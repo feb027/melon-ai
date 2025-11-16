@@ -1,0 +1,8 @@
+
+    <svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+      <rect width="512" height="512" rx="128" fill="#22c55e"/>
+      <circle cx="256" cy="256" r="153.6" fill="#ef4444"/>
+      <text x="256" y="256" font-size="204.8" text-anchor="middle" 
+            dominant-baseline="middle" fill="white" font-family="Arial, sans-serif" font-weight="bold">🍉</text>
+    </svg>
+  
