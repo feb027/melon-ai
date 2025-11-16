@@ -1,65 +1,139 @@
-import Image from "next/image";
-
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto py-8">
+        <main className="flex flex-col gap-8">
+          {/* Header */}
+          <div className="text-center">
+            <h1 className="text-4xl font-bold text-foreground mb-4">
+              MelonAI
+            </h1>
+            <p className="text-lg text-muted-foreground">
+              Tailwind CSS v4 Configuration Test
+            </p>
+          </div>
+
+          {/* Color Test Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {/* Primary Color */}
+            <div className="bg-card border border-border rounded-lg p-6">
+              <div className="w-16 h-16 bg-primary rounded-lg mb-4"></div>
+              <h3 className="text-xl font-semibold text-card-foreground mb-2">
+                Primary (Matang)
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Green color for ripe watermelons
+              </p>
+            </div>
+
+            {/* Secondary Color */}
+            <div className="bg-card border border-border rounded-lg p-6">
+              <div className="w-16 h-16 bg-secondary rounded-lg mb-4"></div>
+              <h3 className="text-xl font-semibold text-card-foreground mb-2">
+                Secondary (Belum Matang)
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Orange color for unripe watermelons
+              </p>
+            </div>
+
+            {/* Success Color */}
+            <div className="bg-card border border-border rounded-lg p-6">
+              <div className="w-16 h-16 bg-success rounded-lg mb-4"></div>
+              <h3 className="text-xl font-semibold text-card-foreground mb-2">
+                Success
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Success state color
+              </p>
+            </div>
+
+            {/* Warning Color */}
+            <div className="bg-card border border-border rounded-lg p-6">
+              <div className="w-16 h-16 bg-warning rounded-lg mb-4"></div>
+              <h3 className="text-xl font-semibold text-card-foreground mb-2">
+                Warning
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Warning state color
+              </p>
+            </div>
+
+            {/* Error Color */}
+            <div className="bg-card border border-border rounded-lg p-6">
+              <div className="w-16 h-16 bg-error rounded-lg mb-4"></div>
+              <h3 className="text-xl font-semibold text-card-foreground mb-2">
+                Error
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Error state color
+              </p>
+            </div>
+
+            {/* Info Color */}
+            <div className="bg-card border border-border rounded-lg p-6">
+              <div className="w-16 h-16 bg-info rounded-lg mb-4"></div>
+              <h3 className="text-xl font-semibold text-card-foreground mb-2">
+                Info
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Info state color
+              </p>
+            </div>
+          </div>
+
+          {/* Typography Test */}
+          <div className="bg-card border border-border rounded-lg p-6">
+            <h2 className="text-2xl font-semibold text-card-foreground mb-4">
+              Typography Scale
+            </h2>
+            <div className="space-y-2">
+              <p className="text-xs text-muted-foreground">Extra Small (12px)</p>
+              <p className="text-sm text-muted-foreground">Small (14px)</p>
+              <p className="text-base text-foreground">Base (16px)</p>
+              <p className="text-lg text-foreground">Large (18px)</p>
+              <p className="text-xl text-foreground">Extra Large (20px)</p>
+              <p className="text-2xl font-semibold text-foreground">2XL (24px)</p>
+            </div>
+          </div>
+
+          {/* Button Test */}
+          <div className="bg-card border border-border rounded-lg p-6">
+            <h2 className="text-2xl font-semibold text-card-foreground mb-4">
+              Button Styles
+            </h2>
+            <div className="flex flex-wrap gap-4">
+              <button className="min-h-11 min-w-11 px-6 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:opacity-90 transition-opacity">
+                Primary Button
+              </button>
+              <button className="min-h-11 min-w-11 px-6 py-2 bg-secondary text-secondary-foreground rounded-lg font-medium hover:opacity-90 transition-opacity">
+                Secondary Button
+              </button>
+              <button className="min-h-11 min-w-11 px-6 py-2 border border-border bg-background text-foreground rounded-lg font-medium hover:bg-muted transition-colors">
+                Outline Button
+              </button>
+            </div>
+          </div>
+
+          {/* Responsive Test */}
+          <div className="bg-card border border-border rounded-lg p-6">
+            <h2 className="text-2xl font-semibold text-card-foreground mb-4">
+              Responsive Breakpoints
+            </h2>
+            <div className="space-y-2 text-sm">
+              <p className="text-foreground">
+                <span className="font-semibold">Current breakpoint:</span>
+                <span className="ml-2 xs:hidden sm:hidden md:hidden lg:hidden xl:hidden">Default (xs: 320px)</span>
+                <span className="ml-2 hidden xs:inline sm:hidden">xs (320px)</span>
+                <span className="ml-2 hidden sm:inline md:hidden">sm (375px)</span>
+                <span className="ml-2 hidden md:inline lg:hidden">md (425px)</span>
+                <span className="ml-2 hidden lg:inline xl:hidden">lg (768px)</span>
+                <span className="ml-2 hidden xl:inline">xl (1024px+)</span>
+              </p>
+            </div>
+          </div>
+        </main>
+      </div>
     </div>
   );
 }

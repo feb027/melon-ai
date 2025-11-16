@@ -7,15 +7,6 @@ const nextConfig: NextConfig = {
   // Enable React Strict Mode for better development experience
   reactStrictMode: true,
   
-  // Optimize package imports for better performance
-  optimizePackageImports: [
-    '@supabase/supabase-js',
-    '@supabase/ssr',
-    'ai',
-    'recharts',
-    'lucide-react',
-  ],
-  
   // Image optimization configuration
   images: {
     remotePatterns: [
