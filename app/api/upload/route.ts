@@ -41,19 +41,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate user ID
-    if (!userId) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: {
-            code: 'MISSING_USER_ID',
-            message: 'User ID tidak ditemukan.',
-          },
-        },
-        { status: 400 }
-      );
-    }
+    // userId is optional for demo (will use 'demo' folder if not provided)
+    // In production with auth, this should be required
+    const userFolder = userId || 'demo';
 
     // Validate file type
     if (!ALLOWED_TYPES.includes(file.type)) {
@@ -86,7 +76,7 @@ export async function POST(request: NextRequest) {
     // Generate unique filename
     const timestamp = Date.now();
     const fileExtension = file.type === 'image/jpeg' ? 'jpg' : 'png';
-    const fileName = `${userId}/${timestamp}.${fileExtension}`;
+    const fileName = `${userFolder}/${timestamp}.${fileExtension}`;
 
     // Create Supabase client
     const supabase = await createClient();
