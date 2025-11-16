@@ -7,14 +7,12 @@
 
 import {
   addToQueue,
-  getQueueItem,
   getAllQueueItems,
   getPendingQueueItems,
   getFailedQueueItems,
   getQueueCount,
   updateQueueItemStatus,
   removeQueueItem,
-  clearQueue,
   getQueueStats,
   resetFailedItems,
   type OfflineQueueItem,
@@ -267,7 +265,7 @@ async function exampleCompleteFlow() {
 /**
  * Helper: Simulate upload (replace with real API call)
  */
-async function simulateUpload(item: OfflineQueueItem): Promise<void> {
+async function simulateUpload(_item: OfflineQueueItem): Promise<void> {
   // Simulate network delay
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
