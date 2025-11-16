@@ -1,149 +1,149 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Progress } from "@/components/ui/progress";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Camera, Sparkles, TrendingUp, Info } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="container mx-auto p-4 space-y-8 min-h-screen">
-      <main className="flex flex-col gap-8 items-center">
-        {/* Header */}
-        <div className="text-center space-y-4 py-8">
-          <h1 className="text-4xl font-bold">MelonAI</h1>
-          <p className="text-lg text-muted-foreground">
-            Sistem analisis kematangan semangka menggunakan AI
+    <div className="min-h-screen flex flex-col">
+      {/* Hero Section */}
+      <section className="flex-1 flex flex-col items-center justify-center px-4 py-12 text-center space-y-6">
+        {/* App Title & Tagline */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-center gap-2">
+            <Sparkles className="h-8 w-8 text-primary" />
+            <h1 className="text-4xl font-bold tracking-tight">MelonAI</h1>
+          </div>
+          <p className="text-lg text-muted-foreground max-w-md">
+            Analisis kematangan semangka dengan AI dalam hitungan detik
           </p>
-          <Badge variant="outline">shadcn/ui Component Test</Badge>
         </div>
 
-        {/* Component Testing Section */}
-        <div className="w-full max-w-4xl space-y-6">
-          {/* Button Component Test */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Button Components</CardTitle>
-              <CardDescription>Testing different button variants</CardDescription>
-            </CardHeader>
-            <CardContent className="flex flex-wrap gap-4">
-              <Button>Default Button</Button>
-              <Button variant="secondary">Secondary</Button>
-              <Button variant="destructive">Destructive</Button>
-              <Button variant="outline">Outline</Button>
-              <Button variant="ghost">Ghost</Button>
-              <Button size="lg">Large Button</Button>
-              <Button size="sm">Small</Button>
-            </CardContent>
-          </Card>
-
-          {/* Badge Component Test */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Badge Components</CardTitle>
-              <CardDescription>Testing badge variants for status indicators</CardDescription>
-            </CardHeader>
-            <CardContent className="flex flex-wrap gap-4">
-              <Badge>Default</Badge>
-              <Badge variant="secondary">Secondary</Badge>
-              <Badge variant="destructive">Destructive</Badge>
-              <Badge variant="outline">Outline</Badge>
-              <Badge className="bg-success text-white">Matang</Badge>
-              <Badge className="bg-warning text-white">Belum Matang</Badge>
-            </CardContent>
-          </Card>
-
-          {/* Alert Component Test */}
-          <Alert>
-            <AlertDescription>
-              Ini adalah contoh alert component untuk notifikasi penting.
-            </AlertDescription>
-          </Alert>
-
-          {/* Progress Component Test */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Progress Component</CardTitle>
-              <CardDescription>Testing progress bar for confidence levels</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>Confidence Level</span>
-                  <span>85%</span>
-                </div>
-                <Progress value={85} />
-              </div>
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>Sweetness Level</span>
-                  <span>7/10</span>
-                </div>
-                <Progress value={70} />
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Skeleton Component Test */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Skeleton Components</CardTitle>
-              <CardDescription>Testing loading states</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Skeleton className="h-12 w-full" />
-              <Skeleton className="h-24 w-full" />
-              <div className="flex gap-4">
-                <Skeleton className="h-16 w-16 rounded-full" />
-                <div className="space-y-2 flex-1">
-                  <Skeleton className="h-4 w-full" />
-                  <Skeleton className="h-4 w-3/4" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Analysis Result Mock */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Hasil Analisis Semangka</CardTitle>
-              <CardDescription>Contoh tampilan hasil analisis</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Status Kematangan:</span>
-                <Badge className="bg-success text-white">Matang</Badge>
-              </div>
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>Tingkat Kepercayaan</span>
-                  <span>92%</span>
-                </div>
-                <Progress value={92} />
-              </div>
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>Tingkat Kemanisan</span>
-                  <span>8/10</span>
-                </div>
-                <Progress value={80} />
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Jenis Semangka:</span>
-                <Badge variant="outline">Merah</Badge>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Kualitas Kulit:</span>
-                <Badge variant="secondary">Baik</Badge>
-              </div>
-              <div className="flex gap-4 pt-4">
-                <Button className="flex-1">Foto Lagi</Button>
-                <Button variant="outline" className="flex-1">Lihat Detail</Button>
-              </div>
-            </CardContent>
-          </Card>
+        {/* Primary CTA Button - Camera Access */}
+        <div className="w-full max-w-sm space-y-4">
+          <Button 
+            size="lg" 
+            className="w-full min-h-16 text-lg font-semibold"
+            asChild
+          >
+            <Link href="/camera">
+              <Camera className="mr-2 h-6 w-6" />
+              Foto Semangka
+            </Link>
+          </Button>
+          
+          {/* Secondary Actions */}
+          <div className="flex gap-3">
+            <Button 
+              variant="outline" 
+              className="flex-1 min-h-11"
+              asChild
+            >
+              <Link href="/history">
+                <TrendingUp className="mr-2 h-4 w-4" />
+                Riwayat
+              </Link>
+            </Button>
+            <Button 
+              variant="outline" 
+              className="flex-1 min-h-11"
+              asChild
+            >
+              <Link href="/analytics">
+                <TrendingUp className="mr-2 h-4 w-4" />
+                Analitik
+              </Link>
+            </Button>
+          </div>
         </div>
-      </main>
+
+        {/* Tutorial Section - First-time Users */}
+        <div className="w-full max-w-2xl mt-12">
+          <div className="flex items-center justify-center gap-2 mb-6">
+            <Info className="h-5 w-5 text-muted-foreground" />
+            <h2 className="text-xl font-semibold">Cara Menggunakan</h2>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {/* Step 1 */}
+            <Card>
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary font-bold text-xl mx-auto mb-2">
+                  1
+                </div>
+                <CardTitle className="text-center text-base">Ambil Foto</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-center text-sm">
+                  Foto semangka dari atas dengan pencahayaan yang baik
+                </CardDescription>
+              </CardContent>
+            </Card>
+
+            {/* Step 2 */}
+            <Card>
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary font-bold text-xl mx-auto mb-2">
+                  2
+                </div>
+                <CardTitle className="text-center text-base">AI Menganalisis</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-center text-sm">
+                  Tunggu beberapa detik sementara AI menganalisis gambar
+                </CardDescription>
+              </CardContent>
+            </Card>
+
+            {/* Step 3 */}
+            <Card>
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary font-bold text-xl mx-auto mb-2">
+                  3
+                </div>
+                <CardTitle className="text-center text-base">Lihat Hasil</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-center text-sm">
+                  Dapatkan informasi kematangan, kemanisan, dan kualitas
+                </CardDescription>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        {/* Tips Section */}
+        <Card className="w-full max-w-2xl mt-8">
+          <CardHeader>
+            <CardTitle className="text-center">Tips Foto Terbaik</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li className="flex items-start gap-2">
+                <span className="text-primary font-bold">•</span>
+                <span>Pastikan semangka terlihat jelas dan tidak terpotong</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-primary font-bold">•</span>
+                <span>Gunakan pencahayaan alami atau lampu yang cukup terang</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-primary font-bold">•</span>
+                <span>Foto dari atas atau samping untuk hasil terbaik</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-primary font-bold">•</span>
+                <span>Hindari bayangan yang menutupi permukaan semangka</span>
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-6 text-center text-sm text-muted-foreground border-t">
+        <p>MelonAI © 2024 - Teknologi AI untuk Pertanian Indonesia</p>
+      </footer>
     </div>
   );
 }
