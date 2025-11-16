@@ -57,7 +57,7 @@ interface PerformanceMetrics {
 export class AIProviderManager {
   private supabase: ReturnType<typeof createClient<Database>>;
   private maxRetriesPerProvider = 2;
-  private timeoutMs = 10000; // 10 seconds
+  private timeoutMs = 30000; // 30 seconds (increased for image analysis)
 
   constructor() {
     // Initialize Supabase client for performance logging
