@@ -5,11 +5,9 @@ import { WifiOff, Wifi, RefreshCw, CheckCircle2 } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { useOfflineSync } from '@/lib/hooks/use-offline-sync';
 
 interface OfflineIndicatorProps {
-  queueCount?: number;
-  isSyncing?: boolean;
-  onManualSync?: () => void;
   className?: string;
 }
 
@@ -22,43 +20,22 @@ interface OfflineIndicatorProps {
  * - Queue counter badge for pending uploads
  * - Sync status with animation
  * - User-friendly messages in Indonesian
+ * - Automatic sync when connection is restored
+ * - Manual sync trigger button
  */
-export function OfflineIndicator({
-  queueCount = 0,
-  isSyncing = false,
-  onManualSync,
-  className,
-}: OfflineIndicatorProps) {
-  const [isOnline, setIsOnline] = useState(true);
+export function OfflineIndicator({ className }: OfflineIndicatorProps) {
+  const { isOnline, isSyncing, queueCount, syncQueue } = useOfflineSync();
   const [showSyncSuccess, setShowSyncSuccess] = useState(false);
+  const [prevQueueCount, setPrevQueueCount] = useState(queueCount);
 
-  // Network status detection
+  // Show success message when queue is cleared
   useEffect(() => {
-    // Set initial status
-    setIsOnline(navigator.onLine);
-
-    const handleOnline = () => {
-      setIsOnline(true);
-      // Show success message briefly when coming back online
-      if (queueCount > 0) {
-        setShowSyncSuccess(true);
-        setTimeout(() => setShowSyncSuccess(false), 3000);
-      }
-    };
-
-    const handleOffline = () => {
-      setIsOnline(false);
-      setShowSyncSuccess(false);
-    };
-
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
-
-    return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
-    };
-  }, [queueCount]);
+    if (prevQueueCount > 0 && queueCount === 0 && isOnline) {
+      setShowSyncSuccess(true);
+      setTimeout(() => setShowSyncSuccess(false), 3000);
+    }
+    setPrevQueueCount(queueCount);
+  }, [queueCount, isOnline, prevQueueCount]);
 
   // Don't show anything if online and no queue
   if (isOnline && queueCount === 0 && !showSyncSuccess) {
@@ -123,15 +100,13 @@ export function OfflineIndicator({
               >
                 {queueCount} foto
               </Badge>
-              {onManualSync && (
-                <button
-                  onClick={onManualSync}
-                  className="text-xs font-medium text-yellow-900 dark:text-yellow-100 hover:underline focus:outline-none focus:ring-2 focus:ring-yellow-500 rounded px-2 py-1"
-                  aria-label="Sinkronkan sekarang"
-                >
-                  Sinkronkan
-                </button>
-              )}
+              <button
+                onClick={syncQueue}
+                className="text-xs font-medium text-yellow-900 dark:text-yellow-100 hover:underline focus:outline-none focus:ring-2 focus:ring-yellow-500 rounded px-2 py-1"
+                aria-label="Sinkronkan sekarang"
+              >
+                Sinkronkan
+              </button>
             </div>
           </AlertDescription>
         </Alert>
