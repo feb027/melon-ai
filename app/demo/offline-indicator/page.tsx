@@ -1,57 +1,74 @@
 'use client';
 
-import { useState } from 'react';
-import { OfflineIndicator, useOnlineStatus } from '@/components/offline-indicator';
+import { OfflineIndicator } from '@/components/offline-indicator';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { useOfflineSync } from '@/lib/hooks/use-offline-sync';
+import { addToQueue, clearQueue as clearQueueDb } from '@/lib/offline/db';
 
 /**
  * Demo page for testing OfflineIndicator component
  * 
  * Features:
  * - Test different states (offline, syncing, queue pending)
- * - Simulate queue count changes
+ * - Real queue management with IndexedDB
  * - Test manual sync trigger
  * - Real-time online/offline detection
+ * 
+ * Note: This demo now uses the real offline sync mechanism.
+ * For a more comprehensive demo, see /demo/offline-sync
  */
 export default function OfflineIndicatorDemo() {
-  const [queueCount, setQueueCount] = useState(0);
-  const [isSyncing, setIsSyncing] = useState(false);
-  const isOnline = useOnlineStatus();
+  const { isOnline, isSyncing, queueCount, syncQueue, refreshQueueCount } = useOfflineSync();
 
-  const handleManualSync = () => {
-    setIsSyncing(true);
-    // Simulate sync process
-    const interval = setInterval(() => {
-      setQueueCount((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          setIsSyncing(false);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
+  const handleAddToQueue = async () => {
+    // Create a test image blob (1x1 red pixel PNG)
+    const canvas = document.createElement('canvas');
+    canvas.width = 1;
+    canvas.height = 1;
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      ctx.fillStyle = 'red';
+      ctx.fillRect(0, 0, 1, 1);
+    }
+
+    const blob = await new Promise<Blob>((resolve) => {
+      canvas.toBlob((b) => resolve(b!), 'image/png');
+    });
+
+    await addToQueue({
+      imageBlob: blob,
+      userId: 'demo-user',
+      metadata: {
+        location: 'Demo Location',
+        batchId: `batch-${Date.now()}`,
+      },
+      timestamp: new Date(),
+      status: 'pending',
+      retryCount: 0,
+    });
+
+    await refreshQueueCount();
   };
 
-  const addToQueue = () => {
-    setQueueCount((prev) => prev + 1);
+  const handleAddMultiple = async () => {
+    for (let i = 0; i < 5; i++) {
+      await handleAddToQueue();
+    }
   };
 
-  const clearQueue = () => {
-    setQueueCount(0);
-    setIsSyncing(false);
+  const handleClearQueue = async () => {
+    if (confirm('Hapus semua item dari queue?')) {
+      await clearQueueDb();
+      await refreshQueueCount();
+    }
   };
 
   return (
     <div className="min-h-screen bg-background">
       {/* Offline Indicator - Fixed at top */}
-      <OfflineIndicator
-        queueCount={queueCount}
-        isSyncing={isSyncing}
-        onManualSync={handleManualSync}
-      />
+      <OfflineIndicator />
 
       {/* Demo Content */}
       <div className="container mx-auto px-4 py-8 pt-24">
@@ -87,21 +104,21 @@ export default function OfflineIndicatorDemo() {
                 <h3 className="text-sm font-medium">Kontrol Queue</h3>
                 <div className="flex flex-wrap gap-2">
                   <Button
-                    onClick={addToQueue}
+                    onClick={handleAddToQueue}
                     variant="outline"
                     size="sm"
                   >
                     Tambah ke Queue (+1)
                   </Button>
                   <Button
-                    onClick={() => setQueueCount((prev) => prev + 5)}
+                    onClick={handleAddMultiple}
                     variant="outline"
                     size="sm"
                   >
                     Tambah 5 Foto
                   </Button>
                   <Button
-                    onClick={clearQueue}
+                    onClick={handleClearQueue}
                     variant="outline"
                     size="sm"
                   >
@@ -115,19 +132,18 @@ export default function OfflineIndicatorDemo() {
                 <h3 className="text-sm font-medium">Kontrol Sinkronisasi</h3>
                 <div className="flex flex-wrap gap-2">
                   <Button
-                    onClick={handleManualSync}
+                    onClick={syncQueue}
                     disabled={queueCount === 0 || isSyncing || !isOnline}
                     size="sm"
                   >
                     Mulai Sinkronisasi
                   </Button>
                   <Button
-                    onClick={() => setIsSyncing(!isSyncing)}
+                    onClick={refreshQueueCount}
                     variant="outline"
                     size="sm"
-                    disabled={queueCount === 0}
                   >
-                    Toggle Syncing State
+                    Refresh Queue Count
                   </Button>
                 </div>
               </div>
@@ -140,13 +156,16 @@ export default function OfflineIndicatorDemo() {
                     <strong>Test Offline:</strong> Buka DevTools → Network → Pilih "Offline"
                   </li>
                   <li>
-                    <strong>Test Queue:</strong> Klik "Tambah ke Queue" untuk simulasi foto pending
+                    <strong>Test Queue:</strong> Klik "Tambah ke Queue" untuk menambah item ke IndexedDB
                   </li>
                   <li>
-                    <strong>Test Sync:</strong> Klik "Mulai Sinkronisasi" untuk simulasi upload
+                    <strong>Test Sync:</strong> Klik "Mulai Sinkronisasi" untuk upload real
                   </li>
                   <li>
-                    <strong>Test Online → Offline:</strong> Toggle network status di DevTools
+                    <strong>Test Auto-Sync:</strong> Tambah item saat offline, lalu kembali online
+                  </li>
+                  <li>
+                    <strong>Full Demo:</strong> Kunjungi <a href="/demo/offline-sync" className="text-primary hover:underline">/demo/offline-sync</a> untuk demo lengkap
                   </li>
                 </ul>
               </div>
