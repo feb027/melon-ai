@@ -47,6 +47,11 @@ interface AnalyticsData {
     count: number;
     percentage: number;
   }>;
+  sweetnessDistribution: Array<{
+    level: string;
+    count: number;
+    percentage: number;
+  }>;
 }
 
 export async function GET(request: NextRequest) {
@@ -123,6 +128,7 @@ export async function GET(request: NextRequest) {
         typeDistribution: [],
         trendData: [],
         skinQualityDistribution: [],
+        sweetnessDistribution: [],
       };
       
       return NextResponse.json({
@@ -175,6 +181,37 @@ export async function GET(request: NextRequest) {
       }))
       .sort((a, b) => b.count - a.count);
     
+    // Calculate sweetness distribution (group by level ranges)
+    const sweetnessCount = analyses.reduce((acc, a) => {
+      const sweetness = a.sweetness_level || 0;
+      let level: string;
+      
+      if (sweetness <= 3) {
+        level = '1-3 (Kurang Manis)';
+      } else if (sweetness <= 6) {
+        level = '4-6 (Sedang)';
+      } else if (sweetness <= 8) {
+        level = '7-8 (Manis)';
+      } else {
+        level = '9-10 (Sangat Manis)';
+      }
+      
+      acc[level] = (acc[level] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+    
+    const sweetnessDistribution = Object.entries(sweetnessCount)
+      .map(([level, count]) => ({
+        level,
+        count: count as number,
+        percentage: Math.round(((count as number) / totalAnalyses) * 100 * 100) / 100,
+      }))
+      .sort((a, b) => {
+        // Sort by level order
+        const order = ['1-3 (Kurang Manis)', '4-6 (Sedang)', '7-8 (Manis)', '9-10 (Sangat Manis)'];
+        return order.indexOf(a.level) - order.indexOf(b.level);
+      });
+    
     // Calculate trend data (group by date)
     const trendMap = analyses.reduce((acc, a) => {
       const createdAt = a.created_at as string | undefined;
@@ -214,6 +251,7 @@ export async function GET(request: NextRequest) {
       typeDistribution,
       trendData,
       skinQualityDistribution,
+      sweetnessDistribution,
     };
     
     // Cache the result for 15 minutes (900 seconds) if KV is available

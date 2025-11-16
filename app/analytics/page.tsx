@@ -44,6 +44,11 @@ interface AnalyticsData {
     count: number;
     percentage: number;
   }>;
+  sweetnessDistribution: Array<{
+    level: string;
+    count: number;
+    percentage: number;
+  }>;
 }
 
 interface FilterState {
@@ -125,26 +130,26 @@ export default function AnalyticsPage() {
 
   if (loading) {
     return (
-      <div className="container mx-auto p-4 space-y-6">
-        <Skeleton className="h-12 w-64" />
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <Skeleton className="h-32" />
-          <Skeleton className="h-32" />
-          <Skeleton className="h-32" />
-          <Skeleton className="h-32" />
+      <div className="min-h-screen bg-background p-3 space-y-3">
+        <Skeleton className="h-10 w-48" />
+        <div className="grid gap-3 grid-cols-2">
+          <Skeleton className="h-24" />
+          <Skeleton className="h-24" />
+          <Skeleton className="h-24" />
+          <Skeleton className="h-24" />
         </div>
-        <Skeleton className="h-96" />
+        <Skeleton className="h-80" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="container mx-auto p-4">
+      <div className="min-h-screen bg-background p-3">
         <Alert variant="destructive">
           <AlertDescription>{error}</AlertDescription>
         </Alert>
-        <Button onClick={fetchAnalytics} className="mt-4">
+        <Button onClick={fetchAnalytics} className="mt-3 w-full">
           Coba Lagi
         </Button>
       </div>
@@ -288,9 +293,10 @@ export default function AnalyticsPage() {
 
       {/* Charts Tabs */}
       <Tabs defaultValue="trends" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="trends">Tren</TabsTrigger>
           <TabsTrigger value="types">Jenis</TabsTrigger>
+          <TabsTrigger value="sweetness">Kemanisan</TabsTrigger>
           <TabsTrigger value="quality">Kualitas</TabsTrigger>
         </TabsList>
 
@@ -377,6 +383,62 @@ export default function AnalyticsPage() {
                     <YAxis />
                     <Tooltip />
                     <Bar dataKey="count" fill={COLORS.primary} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        {/* Sweetness Tab */}
+        <TabsContent value="sweetness" className="space-y-4">
+          <div className="grid gap-4 md:grid-cols-2">
+            <Card>
+              <CardHeader>
+                <CardTitle>Distribusi Tingkat Kemanisan</CardTitle>
+                <CardDescription>Persentase berdasarkan tingkat kemanisan</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Pie
+                      data={data.sweetnessDistribution}
+                      dataKey="count"
+                      nameKey="level"
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={100}
+                      label
+                    >
+                      {data.sweetnessDistribution.map((_, index) => (
+                        <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader>
+                <CardTitle>Jumlah per Tingkat Kemanisan</CardTitle>
+                <CardDescription>Total analisis per tingkat kemanisan</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={data.sweetnessDistribution}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis 
+                      dataKey="level" 
+                      angle={-45}
+                      textAnchor="end"
+                      height={80}
+                    />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="count" fill={COLORS.tertiary} />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
