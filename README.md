@@ -539,28 +539,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Google, OpenAI, Anthropic** - AI vision APIs
 - **Petani Indonesia** - Inspiration untuk project ini
 
----
-
-## 👨‍💻 Author
-
-**Febnawan Fatur Rochman**
-- GitHub: [@feb027](https://github.com/feb027)
-- Location: Indonesia, Jawa Barat
-
----
-
-## 📞 Support
-
-Jika Anda memiliki pertanyaan atau butuh bantuan:
-- Open an [Issue](https://github.com/feb027/melon-ai/issues)
-- Email: [Contact via GitHub](https://github.com/feb027)
-
----
 
 <div align="center">
-
-**Made with ❤️ for Indonesian Farmers**
-
-⭐ Star this repo if you find it helpful!
 
 </div>
