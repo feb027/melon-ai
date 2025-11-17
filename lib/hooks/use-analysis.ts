@@ -156,6 +156,13 @@ export function useAnalysis(): UseAnalysisReturn {
 
       if (!response.ok) {
         const errorData = await response.json();
+        
+        // Check if it's a NOT_A_WATERMELON error
+        if (errorData.error?.code === 'NOT_A_WATERMELON') {
+          const detectedObject = errorData.error.detectedObject || 'Objek tidak dikenali';
+          throw new Error(`Bukan semangka! Terdeteksi: ${detectedObject}`);
+        }
+        
         throw new Error(errorData.error?.message || 'Gagal menganalisis gambar');
       }
 

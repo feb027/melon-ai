@@ -19,6 +19,8 @@ import { z } from 'zod';
  * Ensures consistent response format across all AI providers
  */
 export const analysisSchema = z.object({
+  isWatermelon: z.boolean().describe('Apakah objek dalam gambar adalah semangka'),
+  detectedObject: z.string().optional().describe('Objek yang terdeteksi jika bukan semangka'),
   maturityStatus: z.enum(['Matang', 'Belum Matang']).describe('Status kematangan semangka'),
   confidence: z.number().min(0).max(100).describe('Tingkat kepercayaan analisis (0-100)'),
   sweetnessLevel: z.number().min(1).max(10).describe('Perkiraan tingkat kemanisan (1-10)'),
@@ -71,7 +73,14 @@ export const aiProviders: AIProvider[] = [
  * Analysis prompt in Indonesian for watermelon assessment
  * Used consistently across all AI providers
  */
-export const analysisPrompt = `Analisis gambar semangka ini dan berikan penilaian yang akurat:
+export const analysisPrompt = `Analisis gambar ini dan berikan penilaian yang akurat:
+
+**LANGKAH 1: VALIDASI OBJEK**
+Pertama, tentukan apakah objek dalam gambar adalah SEMANGKA atau bukan.
+- Jika BUKAN semangka, set isWatermelon = false dan sebutkan objek yang terdeteksi di field detectedObject
+- Jika ADALAH semangka, set isWatermelon = true dan lanjutkan ke analisis detail
+
+**LANGKAH 2: ANALISIS SEMANGKA (hanya jika isWatermelon = true)**
 
 **Kriteria Penilaian:**
 
@@ -104,6 +113,8 @@ export const analysisPrompt = `Analisis gambar semangka ini dan berikan penilaia
 - Pola garis-garis pada kulit
 
 **Penting:**
+- SELALU validasi apakah objek adalah semangka terlebih dahulu
+- Jika bukan semangka, jelaskan objek apa yang terdeteksi
 - Berikan penjelasan dalam Bahasa Indonesia yang mudah dipahami petani
 - Jelaskan alasan di balik setiap penilaian
 - Berikan tips praktis jika diperlukan

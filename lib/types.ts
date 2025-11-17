@@ -235,6 +235,8 @@ export interface AIAnalysisInput {
 }
 
 export interface AIAnalysisOutput {
+  isWatermelon: boolean;
+  detectedObject?: string;
   maturityStatus: MaturityStatus;
   confidence: number;
   sweetnessLevel: number;

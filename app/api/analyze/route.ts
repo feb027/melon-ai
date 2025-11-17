@@ -150,6 +150,24 @@ export async function POST(request: NextRequest) {
       
       console.log(`[Analysis API] AI analysis completed in ${aiResponseTime}ms`);
       console.log(`[Analysis API] Result: ${aiResult.maturityStatus} (${aiResult.confidence}% confidence)`);
+      
+      // Check if the detected object is a watermelon
+      if (!aiResult.isWatermelon) {
+        console.log(`[Analysis API] Not a watermelon detected: ${aiResult.detectedObject}`);
+        
+        return NextResponse.json(
+          {
+            success: false,
+            error: {
+              code: 'NOT_A_WATERMELON',
+              message: 'Objek yang terdeteksi bukan semangka.',
+              detectedObject: aiResult.detectedObject || 'Objek tidak dikenali',
+              reasoning: aiResult.reasoning,
+            },
+          },
+          { status: 400 }
+        );
+      }
     } catch (error) {
       console.error('[Analysis API] AI analysis failed:', error);
 
