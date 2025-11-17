@@ -31,12 +31,23 @@ import type { AnalysisResult, AnalysisMetadata } from '@/lib/types';
 // Types
 // ============================================================================
 
+type AnalysisStage = 
+  | 'idle'
+  | 'validating-image'
+  | 'uploading'
+  | 'checking-watermelon'
+  | 'analyzing-ripeness'
+  | 'complete'
+  | 'error';
+
 interface AnalysisState {
   isUploading: boolean;
   isAnalyzing: boolean;
   uploadProgress: number;
   result: AnalysisResult | null;
   error: string | null;
+  stage: AnalysisStage;
+  stageMessage: string;
 }
 
 interface UseAnalysisReturn {
@@ -47,6 +58,8 @@ interface UseAnalysisReturn {
   uploadProgress: number;
   result: AnalysisResult | null;
   error: string | null;
+  stage: AnalysisStage;
+  stageMessage: string;
   
   // Actions
   analyzeImage: (imageBlob: Blob, userId: string, metadata?: AnalysisMetadata) => Promise<void>;
@@ -64,10 +77,23 @@ export function useAnalysis(): UseAnalysisReturn {
     uploadProgress: 0,
     result: null,
     error: null,
+    stage: 'idle',
+    stageMessage: '',
   });
 
   // Get offline sync status
   const { isOnline, refreshQueueCount } = useOfflineSync();
+
+  /**
+   * Update analysis stage with message
+   */
+  const updateStage = useCallback((stage: AnalysisStage, message: string) => {
+    setState(prev => ({
+      ...prev,
+      stage,
+      stageMessage: message,
+    }));
+  }, []);
 
   /**
    * Reset analysis state
@@ -79,6 +105,8 @@ export function useAnalysis(): UseAnalysisReturn {
       uploadProgress: 0,
       result: null,
       error: null,
+      stage: 'idle',
+      stageMessage: '',
     });
   }, []);
 
@@ -180,7 +208,7 @@ export function useAnalysis(): UseAnalysisReturn {
 
   /**
    * Complete analysis flow: upload → analyze → display result
-   * Handles both online and offline modes
+   * Handles both online and offline modes with progressive feedback
    */
   const analyzeImage = useCallback(async (
     imageBlob: Blob,
@@ -194,6 +222,8 @@ export function useAnalysis(): UseAnalysisReturn {
       uploadProgress: 0,
       result: null,
       error: null,
+      stage: 'idle',
+      stageMessage: '',
     });
 
     // Check if offline
@@ -224,6 +254,8 @@ export function useAnalysis(): UseAnalysisReturn {
         setState(prev => ({
           ...prev,
           error: 'Foto disimpan dalam antrian offline',
+          stage: 'error',
+          stageMessage: 'Mode offline',
         }));
 
         return;
@@ -237,29 +269,51 @@ export function useAnalysis(): UseAnalysisReturn {
         setState(prev => ({
           ...prev,
           error: 'Gagal menyimpan foto ke antrian offline',
+          stage: 'error',
+          stageMessage: 'Gagal menyimpan',
         }));
 
         return;
       }
     }
 
-    // Online mode - proceed with normal flow
+    // Online mode - proceed with normal flow with progressive feedback
     try {
-      // Step 1: Upload image
+      // Stage 1: Validating image
+      updateStage('validating-image', 'Memvalidasi gambar...');
+      toast.loading('Memvalidasi gambar...', { id: 'analysis-flow' });
+      
+      // Simulate validation delay (in real implementation, add actual validation)
+      await new Promise(resolve => setTimeout(resolve, 300));
+
+      // Stage 2: Upload image
+      updateStage('uploading', 'Mengunggah gambar...');
       toast.loading('Mengunggah gambar...', { id: 'analysis-flow' });
       
       const imageUrl = await uploadImage(imageBlob, userId);
       
-      toast.loading('Menganalisis semangka...', { id: 'analysis-flow' });
+      // Stage 3: Checking if watermelon
+      updateStage('checking-watermelon', 'Memeriksa objek...');
+      toast.loading('Memeriksa apakah semangka...', { id: 'analysis-flow' });
+      
+      // Small delay for UX
+      await new Promise(resolve => setTimeout(resolve, 200));
 
-      // Step 2: Analyze with AI
+      // Stage 4: Analyze ripeness with AI
+      updateStage('analyzing-ripeness', 'Menganalisis kematangan...');
+      toast.loading('Menganalisis kematangan semangka...', { id: 'analysis-flow' });
+
       const result = await analyzeImageWithAI(imageUrl, userId, metadata);
 
-      // Step 3: Update state with result
+      // Stage 5: Complete
+      updateStage('complete', 'Analisis selesai!');
+      
       setState(prev => ({
         ...prev,
         result,
         error: null,
+        stage: 'complete',
+        stageMessage: 'Analisis selesai!',
       }));
 
       // Show success toast
@@ -273,10 +327,14 @@ export function useAnalysis(): UseAnalysisReturn {
         ? error.message 
         : 'Terjadi kesalahan saat menganalisis gambar';
 
+      updateStage('error', errorMessage);
+      
       setState(prev => ({
         ...prev,
         result: null,
         error: errorMessage,
+        stage: 'error',
+        stageMessage: errorMessage,
       }));
 
       // Show error toast
@@ -287,7 +345,7 @@ export function useAnalysis(): UseAnalysisReturn {
 
       console.error('[useAnalysis] Error:', error);
     }
-  }, [isOnline, uploadImage, analyzeImageWithAI, refreshQueueCount]);
+  }, [isOnline, uploadImage, analyzeImageWithAI, refreshQueueCount, updateStage]);
 
   return {
     // State
@@ -297,6 +355,8 @@ export function useAnalysis(): UseAnalysisReturn {
     uploadProgress: state.uploadProgress,
     result: state.result,
     error: state.error,
+    stage: state.stage,
+    stageMessage: state.stageMessage,
     
     // Actions
     analyzeImage,

@@ -21,11 +21,11 @@
 import { useState } from 'react';
 import { CameraCapture } from '@/components/camera-capture';
 import { AnalysisResult } from '@/components/analysis-result';
+import { AnalysisProgress } from '@/components/analysis-progress';
 import { useAnalysis } from '@/lib/hooks/use-analysis';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Skeleton } from '@/components/ui/skeleton';
 import { Camera, Loader2, RotateCcw } from 'lucide-react';
 
 export default function AnalysisFlowDemo() {
@@ -39,6 +39,8 @@ export default function AnalysisFlowDemo() {
     uploadProgress,
     result,
     error,
+    stage,
+    stageMessage,
     analyzeImage,
     reset,
   } = useAnalysis();
@@ -133,22 +135,19 @@ export default function AnalysisFlowDemo() {
         </Card>
       )}
 
-      {/* Loading States */}
+      {/* Loading States with Progressive Feedback */}
       {isLoading && (
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Loader2 className="h-5 w-5 animate-spin" />
-              {isUploading ? 'Mengunggah Gambar...' : 'Menganalisis Semangka...'}
+              {stageMessage || 'Memproses...'}
             </CardTitle>
             <CardDescription>
-              {isUploading 
-                ? 'Mohon tunggu, gambar sedang diunggah ke server'
-                : 'AI sedang menganalisis kematangan dan kualitas semangka'
-              }
+              Mohon tunggu, proses analisis sedang berlangsung
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-6">
             {/* Image Preview */}
             {capturedImage && (
               <div className="relative aspect-video w-full overflow-hidden rounded-lg">
@@ -160,27 +159,17 @@ export default function AnalysisFlowDemo() {
               </div>
             )}
 
-            {/* Upload Progress */}
-            {isUploading && (
+            {/* Progressive Analysis Steps */}
+            <AnalysisProgress currentStage={stage} />
+
+            {/* Upload Progress Bar (legacy, shown during upload) */}
+            {isUploading && uploadProgress > 0 && (
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span>Progress Upload</span>
                   <span className="font-medium">{uploadProgress}%</span>
                 </div>
                 <Progress value={uploadProgress} />
-              </div>
-            )}
-
-            {/* Analysis Loading Skeleton */}
-            {isAnalyzing && (
-              <div className="space-y-4">
-                <Skeleton className="h-8 w-3/4" />
-                <Skeleton className="h-6 w-1/2" />
-                <Skeleton className="h-6 w-2/3" />
-                <div className="grid grid-cols-2 gap-4">
-                  <Skeleton className="h-20" />
-                  <Skeleton className="h-20" />
-                </div>
               </div>
             )}
           </CardContent>
@@ -237,6 +226,14 @@ export default function AnalysisFlowDemo() {
           <div className="flex justify-between">
             <span>Gambar Tertangkap:</span>
             <span className="font-mono">{capturedImage ? 'Ya' : 'Tidak'}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Stage:</span>
+            <span className="font-mono">{stage}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Stage Message:</span>
+            <span className="font-mono text-xs">{stageMessage || '-'}</span>
           </div>
           <div className="flex justify-between">
             <span>Sedang Upload:</span>
