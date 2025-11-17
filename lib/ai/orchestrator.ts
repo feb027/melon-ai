@@ -23,6 +23,7 @@ import {
   type AnalysisOutput,
   type AIProvider,
 } from './providers';
+import { logAIPerformance } from '../monitoring/logger';
 
 /**
  * AI Service Error class for better error handling
@@ -221,26 +222,21 @@ export class AIProviderManager {
    */
   private async logPerformance(metrics: PerformanceMetrics): Promise<void> {
     try {
-      const { error } = await this.supabase
-        .from('ai_performance_logs')
-        .insert({
-          provider: metrics.provider,
-          response_time: metrics.responseTime,
-          success: metrics.success,
-          prompt_tokens: metrics.promptTokens ?? null,
-          completion_tokens: metrics.completionTokens ?? null,
-          error_message: metrics.errorMessage ?? null,
-        });
+      // Use centralized logging utility
+      await logAIPerformance({
+        provider: metrics.provider,
+        responseTime: metrics.responseTime,
+        success: metrics.success,
+        promptTokens: metrics.promptTokens,
+        completionTokens: metrics.completionTokens,
+        errorMessage: metrics.errorMessage,
+      });
 
-      if (error) {
-        console.error('[AI Orchestrator] Supabase logging error:', error);
-      } else {
-        console.log(
-          `[AI Orchestrator] Logged performance: ${metrics.provider} - ${metrics.responseTime}ms - ${metrics.success ? 'success' : 'failed'}`
-        );
-      }
+      console.log(
+        `[AI Orchestrator] Logged performance: ${metrics.provider} - ${metrics.responseTime}ms - ${metrics.success ? 'success' : 'failed'}`
+      );
     } catch (error) {
-      console.error('[AI Orchestrator] Failed to log to Supabase:', error);
+      console.error('[AI Orchestrator] Failed to log performance:', error);
     }
   }
 

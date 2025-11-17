@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 // Font optimization using next/font/google
 const inter = Inter({
@@ -82,6 +84,10 @@ export default function RootLayout({
         </div>
         {/* Global toast notifications */}
         <Toaster />
+        {/* Vercel Analytics for performance monitoring */}
+        <Analytics />
+        {/* Vercel Speed Insights for Core Web Vitals */}
+        <SpeedInsights />
       </body>
     </html>
   );
