@@ -66,25 +66,6 @@ export default function Home() {
           
           {/* Responsive Flex Layout - Vertical on mobile/tablet, 3 columns on desktop */}
           <div className="tutorial-steps-container">
-            <style jsx>{`
-              .tutorial-steps-container {
-                display: flex;
-                flex-direction: column;
-                gap: 0.75rem;
-              }
-
-              @media (min-width: 768px) {
-                .tutorial-steps-container {
-                  flex-direction: row;
-                  gap: 1rem;
-                }
-              }
-
-              .tutorial-steps-container > * {
-                flex: 1;
-              }
-            `}</style>
-            
             {/* Step 1 */}
             <Card>
               <CardHeader className="pb-3">
