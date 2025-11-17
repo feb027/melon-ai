@@ -16,7 +16,14 @@ export default defineConfig({
     
     // Test file patterns
     include: ['**/*.{test,spec}.{js,ts,jsx,tsx}'],
-    exclude: ['**/node_modules/**', '**/dist/**', '**/.next/**'],
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/.next/**',
+      '**/e2e/**', // Exclude Playwright E2E tests
+      '**/playwright-report/**',
+      '**/test-results/**',
+    ],
     
     // Coverage configuration
     coverage: {
