@@ -1,5 +1,9 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Deployment Test
+
+This section is added to test Vercel preview deployments. Once verified, this will be removed.
+
 ## Getting Started
 
 First, run the development server:
