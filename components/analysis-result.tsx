@@ -218,7 +218,7 @@ export function AnalysisResult({ result, onRetry, onFeedback }: AnalysisResultPr
                 {/* Reasoning */}
                 <div className="space-y-2">
                   <h4 className="font-semibold">Analisis AI</h4>
-                  <div className="text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed">
+                  <div className="text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed prose prose-sm max-w-none dark:prose-invert">
                     {result.reasoning}
                   </div>
                 </div>

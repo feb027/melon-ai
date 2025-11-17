@@ -188,48 +188,96 @@ Gunakan pedoman ini untuk menentukan confidence (0-100):
 
 **LANGKAH 8: REASONING (Penjelasan)**
 
-Format penjelasan Anda seperti ini:
+Format penjelasan Anda HARUS mengikuti struktur ini dengan sections yang jelas:
 
-1. **Observasi**: [Apa yang Anda lihat dari gambar]
-2. **Indikator Positif**: [Tanda-tanda semangka matang]
-3. **Indikator Negatif**: [Tanda-tanda belum matang, jika ada]
-4. **Kesimpulan**: [Keputusan final dengan alasan kuat]
-5. **Rekomendasi**: [Kapan panen atau tunggu berapa hari]
+**OBSERVASI:**
+[Deskripsi singkat apa yang terlihat - 1-2 kalimat]
+
+**INDIKATOR KEMATANGAN:**
+✅ Positif:
+• [Indikator 1 yang menunjukkan matang]
+• [Indikator 2 yang menunjukkan matang]
+• [dst...]
+
+❌ Negatif:
+• [Indikator 1 yang menunjukkan belum matang, jika ada]
+• [Indikator 2 yang menunjukkan belum matang, jika ada]
+• [dst... atau tulis "Tidak ada" jika semua positif]
+
+**KESIMPULAN:**
+[Keputusan final (Matang/Belum Matang) dengan alasan kuat - 2-3 kalimat]
+
+**REKOMENDASI:**
+[Aksi yang harus dilakukan - kapan panen atau tunggu berapa hari - 1-2 kalimat]
+
+PENTING: Gunakan format dengan sections, emoji (✅❌), dan bullet points (•) seperti contoh di atas agar mudah dibaca!
 
 **CONTOH ANALISIS (Few-Shot Examples):**
 
 **Contoh 1 - Semangka Matang:**
-"Observasi: Semangka dengan field spot kuning tua berukuran besar (~12cm), tangkai terlihat kering dan coklat, kulit kusam dengan kontras garis hijau tua-terang yang jelas.
 
-Indikator Positif: Field spot kuning tua (indikator kuat matang), tangkai kering (sudah siap panen), kulit kusam (tidak mengkilap), kontras garis tinggi, ada webbing di beberapa bagian.
+OBSERVASI:
+Semangka dengan field spot kuning tua berukuran besar (~12cm), tangkai terlihat kering dan coklat, kulit kusam dengan kontras garis yang jelas.
 
-Indikator Negatif: Tidak ada indikator negatif yang signifikan.
+INDIKATOR KEMATANGAN:
+✅ Positif:
+• Field spot kuning tua berukuran besar - indikator kuat kematangan
+• Tangkai kering dan berwarna coklat - sudah siap panen
+• Kulit kusam (tidak mengkilap) - tanda matang
+• Kontras garis hijau tua-terang tinggi - kematangan optimal
+• Ada webbing di beberapa bagian - indikasi kemanisan tinggi
 
-Kesimpulan: Semangka ini MATANG dan siap dipanen. Tingkat kepercayaan 95% karena semua indikator utama menunjukkan kematangan optimal.
+❌ Negatif:
+• Tidak ada indikator negatif yang signifikan
 
-Rekomendasi: Panen sekarang untuk kualitas terbaik. Jangan ditunda lebih dari 2-3 hari agar tidak overripe."
+KESIMPULAN:
+Semangka ini MATANG dan siap dipanen. Tingkat kepercayaan 95% karena semua indikator utama (field spot, tangkai, tekstur kulit) menunjukkan kematangan optimal. Perkiraan tingkat kemanisan 8-9 dari 10.
+
+REKOMENDASI:
+Panen sekarang untuk kualitas terbaik. Jangan ditunda lebih dari 2-3 hari agar tidak overripe dan kehilangan kesegaran.
 
 **Contoh 2 - Semangka Belum Matang:**
-"Observasi: Semangka dengan field spot putih kekuningan pucat, kulit mengkilap, garis-garis hijau dengan kontras rendah.
 
-Indikator Positif: Bentuk simetris dan baik, tidak ada kerusakan pada kulit.
+OBSERVASI:
+Semangka dengan field spot putih kekuningan pucat, kulit mengkilap, dan garis-garis hijau dengan kontras rendah.
 
-Indikator Negatif: Field spot masih pucat (belum matang), kulit mengkilap (tanda muda), kontras garis rendah, tangkai tidak terlihat untuk konfirmasi.
+INDIKATOR KEMATANGAN:
+✅ Positif:
+• Bentuk simetris dan proporsional - pertumbuhan baik
+• Tidak ada kerusakan atau penyakit pada kulit
 
-Kesimpulan: Semangka ini BELUM MATANG. Tingkat kepercayaan 80% berdasarkan field spot pucat dan kulit mengkilap.
+❌ Negatif:
+• Field spot masih pucat (putih kekuningan) - belum matang
+• Kulit mengkilap/glossy - tanda masih muda
+• Kontras garis rendah - belum mencapai kematangan
+• Tangkai tidak terlihat dalam frame untuk konfirmasi
 
-Rekomendasi: Tunggu 5-7 hari lagi. Periksa kembali saat field spot berubah menjadi kuning tua/cream dan kulit menjadi kusam."
+KESIMPULAN:
+Semangka ini BELUM MATANG. Tingkat kepercayaan 80% berdasarkan field spot yang masih pucat dan kulit yang masih mengkilap. Perkiraan tingkat kemanisan saat ini 4-5 dari 10.
+
+REKOMENDASI:
+Tunggu 5-7 hari lagi sebelum panen. Periksa kembali saat field spot berubah menjadi kuning tua/cream dan kulit menjadi kusam/dull.
 
 **Contoh 3 - Confidence Rendah:**
-"Observasi: Gambar agak gelap, hanya sebagian semangka terlihat, field spot tidak terlihat dalam frame.
 
-Indikator Positif: Kulit terlihat kusam (mungkin matang).
+OBSERVASI:
+Gambar agak gelap dengan pencahayaan kurang, hanya sebagian semangka terlihat, field spot tidak terlihat dalam frame.
 
-Indikator Negatif: Tidak bisa melihat field spot (indikator paling penting), tangkai tidak terlihat, pencahayaan buruk.
+INDIKATOR KEMATANGAN:
+✅ Positif:
+• Kulit terlihat kusam (mungkin indikasi matang)
 
-Kesimpulan: Sulit menentukan kematangan dengan pasti. Tingkat kepercayaan hanya 45% karena indikator utama tidak terlihat.
+❌ Negatif:
+• Field spot tidak terlihat - indikator paling penting hilang
+• Tangkai tidak terlihat dalam frame
+• Pencahayaan buruk - sulit menilai warna dan tekstur
+• Hanya sebagian kecil semangka terlihat
 
-Rekomendasi: Ambil foto ulang dengan pencahayaan lebih baik dan pastikan field spot (bagian bawah semangka) terlihat jelas dalam frame."
+KESIMPULAN:
+Sulit menentukan kematangan dengan pasti. Tingkat kepercayaan hanya 45% karena indikator utama (field spot dan tangkai) tidak terlihat, ditambah kualitas gambar yang kurang baik.
+
+REKOMENDASI:
+Ambil foto ulang dengan pencahayaan lebih baik. Pastikan field spot (bagian bawah semangka yang menyentuh tanah) terlihat jelas dalam frame. Foto dari angle yang menunjukkan lebih banyak permukaan semangka.
 
 **PENTING:**
 - Gunakan penalaran step-by-step seperti contoh di atas
