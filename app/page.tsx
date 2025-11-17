@@ -64,8 +64,27 @@ export default function Home() {
             <h2 className="text-lg sm:text-xl font-semibold">Cara Menggunakan</h2>
           </div>
           
-          {/* Responsive Grid Layout - Vertical on mobile/tablet, 3 columns on desktop */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+          {/* Responsive Flex Layout - Vertical on mobile/tablet, 3 columns on desktop */}
+          <div className="tutorial-steps-container">
+            <style jsx>{`
+              .tutorial-steps-container {
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+              }
+
+              @media (min-width: 768px) {
+                .tutorial-steps-container {
+                  flex-direction: row;
+                  gap: 1rem;
+                }
+              }
+
+              .tutorial-steps-container > * {
+                flex: 1;
+              }
+            `}</style>
+            
             {/* Step 1 */}
             <Card>
               <CardHeader className="pb-3">
