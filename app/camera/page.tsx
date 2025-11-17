@@ -6,9 +6,9 @@ import { ArrowLeft, Camera as CameraIcon, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CameraCapture } from '@/components/camera-capture';
 import { AnalysisResult } from '@/components/analysis-result';
+import { AnalysisProgress } from '@/components/analysis-progress';
 import { useAnalysis } from '@/lib/hooks/use-analysis';
 import { Progress } from '@/components/ui/progress';
-import { Skeleton } from '@/components/ui/skeleton';
 import type { AppError } from '@/lib/types';
 
 /**
@@ -24,11 +24,12 @@ export default function CameraPage() {
   
   const {
     isUploading,
-    isAnalyzing,
     isLoading,
     uploadProgress,
     result,
     error,
+    stage,
+    stageMessage,
     analyzeImage,
     reset,
   } = useAnalysis();
@@ -101,9 +102,9 @@ export default function CameraPage() {
             <CameraCapture onCapture={handleCapture} onError={handleError} />
           )}
 
-          {/* Loading States */}
+          {/* Loading States with Progressive Feedback */}
           {isLoading && (
-            <div className="space-y-4">
+            <div className="space-y-6">
               {/* Image Preview */}
               {capturedImage && (
                 <div className="relative aspect-video w-full overflow-hidden rounded-lg border">
@@ -115,27 +116,25 @@ export default function CameraPage() {
                 </div>
               )}
 
-              {/* Upload Progress */}
-              {isUploading && (
+              {/* Current Stage Message */}
+              <div className="text-center">
+                <p className="text-lg font-semibold">{stageMessage || 'Memproses...'}</p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Mohon tunggu, proses analisis sedang berlangsung
+                </p>
+              </div>
+
+              {/* Progressive Analysis Steps */}
+              <AnalysisProgress currentStage={stage} />
+
+              {/* Upload Progress Bar (shown during upload) */}
+              {isUploading && uploadProgress > 0 && (
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span className="font-medium">Mengunggah gambar...</span>
+                    <span className="font-medium">Progress Upload</span>
                     <span className="text-muted-foreground">{uploadProgress}%</span>
                   </div>
                   <Progress value={uploadProgress} />
-                </div>
-              )}
-
-              {/* Analysis Loading */}
-              {isAnalyzing && (
-                <div className="space-y-4">
-                  <p className="text-center font-medium">Menganalisis dengan AI...</p>
-                  <Skeleton className="h-32 w-full" />
-                  <Skeleton className="h-24 w-full" />
-                  <div className="grid grid-cols-2 gap-4">
-                    <Skeleton className="h-20" />
-                    <Skeleton className="h-20" />
-                  </div>
                 </div>
               )}
             </div>
