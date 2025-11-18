@@ -37,7 +37,7 @@ const stages: Stage[] = [
   {
     id: 'checking-watermelon',
     label: 'Deteksi Objek',
-    description: 'Memastikan objek adalah semangka',
+    description: 'Mengidentifikasi jenis buah',
   },
   {
     id: 'analyzing-ripeness',

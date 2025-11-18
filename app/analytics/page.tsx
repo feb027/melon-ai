@@ -228,7 +228,7 @@ export default function AnalyticsPage() {
         <div>
           <h1 className="text-3xl font-bold">Dashboard Analitik</h1>
           <p className="text-muted-foreground">
-            Statistik dan tren analisis semangka
+            Statistik dan tren analisis semangka & melon
           </p>
         </div>
         <Button 
@@ -450,7 +450,7 @@ export default function AnalyticsPage() {
                 Tren Tingkat Kematangan
               </CardTitle>
               <CardDescription>
-                Persentase semangka matang dalam 30 hari terakhir
+                Persentase buah matang dalam 30 hari terakhir
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -485,8 +485,8 @@ export default function AnalyticsPage() {
           <div className="grid gap-4 md:grid-cols-2">
             <Card>
               <CardHeader>
-                <CardTitle>Distribusi Jenis Semangka</CardTitle>
-                <CardDescription>Persentase berdasarkan jenis</CardDescription>
+                <CardTitle>Distribusi Varietas</CardTitle>
+                <CardDescription>Persentase berdasarkan varietas buah</CardDescription>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
@@ -513,8 +513,8 @@ export default function AnalyticsPage() {
             
             <Card>
               <CardHeader>
-                <CardTitle>Jumlah per Jenis</CardTitle>
-                <CardDescription>Total analisis per jenis semangka</CardDescription>
+                <CardTitle>Jumlah per Varietas</CardTitle>
+                <CardDescription>Total analisis per varietas buah</CardDescription>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>

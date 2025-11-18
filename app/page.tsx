@@ -15,7 +15,7 @@ export default function Home() {
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">MelonAI</h1>
           </div>
           <p className="text-base sm:text-lg text-muted-foreground max-w-md px-4">
-            Analisis kematangan semangka dengan AI dalam hitungan detik
+            Analisis kematangan semangka & melon dengan AI dalam hitungan detik
           </p>
         </div>
 
@@ -28,7 +28,7 @@ export default function Home() {
           >
             <Link href="/camera">
               <Camera className="mr-2 h-5 w-5 sm:h-6 sm:w-6" />
-              Foto Semangka
+              Ambil Foto
             </Link>
           </Button>
           
@@ -76,7 +76,7 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-center text-sm">
-                  Foto semangka dari atas dengan pencahayaan yang baik
+                  Foto buah dari atas dengan pencahayaan yang baik
                 </CardDescription>
               </CardContent>
             </Card>
@@ -122,7 +122,7 @@ export default function Home() {
             <ul className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm text-muted-foreground">
               <li className="flex items-start gap-2">
                 <span className="text-primary font-bold shrink-0">•</span>
-                <span>Pastikan semangka terlihat jelas dan tidak terpotong</span>
+                <span>Pastikan buah terlihat jelas dan tidak terpotong</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-primary font-bold shrink-0">•</span>
@@ -134,7 +134,7 @@ export default function Home() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-primary font-bold shrink-0">•</span>
-                <span>Hindari bayangan yang menutupi permukaan semangka</span>
+                <span>Hindari bayangan yang menutupi permukaan buah</span>
               </li>
             </ul>
           </CardContent>

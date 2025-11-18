@@ -225,7 +225,7 @@ export function AnalysisResult({ result, onRetry, onFeedback }: AnalysisResultPr
               <DialogHeader>
                 <DialogTitle>Penjelasan Detail Analisis</DialogTitle>
                 <DialogDescription>
-                  Berikut adalah penjelasan lengkap dari AI mengenai hasil analisis semangka Anda.
+                  Berikut adalah penjelasan lengkap dari AI mengenai hasil analisis Anda.
                 </DialogDescription>
               </DialogHeader>
               

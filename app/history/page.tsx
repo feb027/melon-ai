@@ -123,7 +123,7 @@ export default function HistoryPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Riwayat Analisis</h1>
           <p className="text-muted-foreground">
-            Lihat semua hasil analisis semangka yang telah dilakukan
+            Lihat semua hasil analisis yang telah dilakukan
           </p>
         </div>
 
@@ -216,7 +216,7 @@ export default function HistoryPage() {
                     <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-muted mb-3">
                       <Image
                         src={analysis.image_url}
-                        alt="Foto semangka"
+                        alt="Foto buah"
                         fill
                         className="object-cover"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"

@@ -389,7 +389,7 @@ export function CameraCapture({ onCapture, onError }: CameraComponentProps) {
             {/* Instruction text */}
             <div className="absolute bottom-20 sm:bottom-24 left-0 right-0 text-center px-4">
               <p className="text-white text-xs sm:text-sm font-medium bg-black/50 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full inline-block">
-                Posisikan semangka di dalam bingkai
+                Posisikan buah di tengah bingkai
               </p>
             </div>
           </div>

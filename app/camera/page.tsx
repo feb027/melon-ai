@@ -89,7 +89,7 @@ export default function CameraPage() {
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <h1 className="text-base sm:text-lg font-semibold truncate">
-            {showCamera ? 'Ambil Foto Semangka' : 'Hasil Analisis'}
+            {showCamera ? 'Ambil Foto' : 'Hasil Analisis'}
           </h1>
         </div>
       </header>

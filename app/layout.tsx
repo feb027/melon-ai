@@ -15,15 +15,17 @@ const inter = Inter({
 // Metadata for SEO and PWA
 export const metadata: Metadata = {
   title: {
-    default: "MelonAI - Analisis Kematangan Semangka dengan AI",
+    default: "MelonAI - Analisis Kematangan Semangka & Melon dengan AI",
     template: "%s | MelonAI",
   },
   description:
-    "Aplikasi berbasis AI untuk menganalisis kematangan dan kualitas semangka secara objektif. Mudah digunakan untuk petani dan pedagang.",
+    "Aplikasi berbasis AI untuk menganalisis kematangan dan kualitas semangka & melon secara objektif. Mudah digunakan untuk petani dan pedagang.",
   applicationName: "MelonAI",
   keywords: [
     "semangka",
+    "melon",
     "analisis semangka",
+    "analisis melon",
     "AI",
     "kematangan buah",
     "pertanian",
@@ -44,15 +46,15 @@ export const metadata: Metadata = {
     type: "website",
     locale: "id_ID",
     siteName: "MelonAI",
-    title: "MelonAI - Analisis Kematangan Semangka dengan AI",
+    title: "MelonAI - Analisis Kematangan Semangka & Melon dengan AI",
     description:
-      "Aplikasi berbasis AI untuk menganalisis kematangan dan kualitas semangka secara objektif.",
+      "Aplikasi berbasis AI untuk menganalisis kematangan dan kualitas semangka & melon secara objektif.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "MelonAI - Analisis Kematangan Semangka dengan AI",
+    title: "MelonAI - Analisis Kematangan Semangka & Melon dengan AI",
     description:
-      "Aplikasi berbasis AI untuk menganalisis kematangan dan kualitas semangka secara objektif.",
+      "Aplikasi berbasis AI untuk menganalisis kematangan dan kualitas semangka & melon secara objektif.",
   },
 };
 

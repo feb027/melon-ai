@@ -19,7 +19,7 @@ export default function OfflinePage() {
           <div className="rounded-lg bg-muted p-4 text-sm">
             <p className="mb-2 font-medium">Yang Masih Bisa Dilakukan:</p>
             <ul className="list-inside list-disc space-y-1 text-muted-foreground">
-              <li>Ambil foto semangka (akan diunggah saat online)</li>
+              <li>Ambil foto (akan diunggah saat online)</li>
               <li>Lihat hasil analisis sebelumnya</li>
               <li>Jelajahi aplikasi</li>
             </ul>
