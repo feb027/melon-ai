@@ -17,7 +17,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { startDate, endDate, location, watermelonType } = body;
+    const { startDate, endDate, location, fruitType, fruitVariety } = body;
 
     // Validate required fields
     if (!startDate || !endDate) {
@@ -45,8 +45,12 @@ export async function POST(request: NextRequest) {
       query = query.eq('location', location);
     }
 
-    if (watermelonType) {
-      query = query.eq('watermelon_type', watermelonType);
+    if (fruitType) {
+      query = query.like('watermelon_type', `${fruitType}:%`);
+    }
+    
+    if (fruitVariety) {
+      query = query.like('watermelon_type', `%:${fruitVariety}`);
     }
 
     const { data: analyses, error: fetchError } = await query;
@@ -127,7 +131,8 @@ export async function POST(request: NextRequest) {
       },
       filters: {
         location: location || 'Semua lokasi',
-        watermelonType: watermelonType || 'Semua jenis',
+        fruitType: fruitType || 'Semua buah',
+        fruitVariety: fruitVariety || 'Semua varietas',
       },
       summary: {
         totalAnalyses,
@@ -142,7 +147,7 @@ export async function POST(request: NextRequest) {
         maturityStatus: a.maturity_status,
         confidence: a.confidence,
         sweetnessLevel: a.sweetness_level,
-        watermelonType: a.watermelon_type,
+        fruitVariety: a.watermelon_type?.split(':')[1] || a.watermelon_type,
         skinQuality: a.skin_quality,
       })),
     };

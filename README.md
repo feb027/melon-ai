@@ -1,16 +1,17 @@
 <div align="center">
 
-# 🍉 MelonAI
+# 🍉🍈 MelonAI
 
-### Sistem Analisis Kematangan Semangka Berbasis AI Vision
+### Sistem Analisis Kematangan Semangka & Melon Berbasis AI Vision
 
+[![Version](https://img.shields.io/badge/Version-1.1.0-brightgreen?style=for-the-badge)](https://github.com/feb027/melon-ai/releases)
 [![Next.js](https://img.shields.io/badge/Next.js-16.0.3-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.1+-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![Bun](https://img.shields.io/badge/Bun-1.0+-f9f1e1?style=for-the-badge&logo=bun)](https://bun.sh/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-38bdf8?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
-**MelonAI** adalah aplikasi Progressive Web App (PWA) mobile-first yang memanfaatkan cloud computing dan AI vision untuk membantu petani dan pedagang semangka menilai kematangan dan kualitas semangka secara objektif tanpa harus membelahnya.
+**MelonAI** adalah aplikasi Progressive Web App (PWA) mobile-first yang memanfaatkan cloud computing dan AI vision untuk membantu petani dan pedagang menilai kematangan dan kualitas semangka & melon secara objektif tanpa harus membelahnya.
 
 [Demo](https://melon-ai.vercel.app) • [Dokumentasi](#dokumentasi) • [Roadmap](#roadmap)
 
@@ -21,8 +22,10 @@
 ## ✨ Fitur Utama
 
 🎯 **Analisis AI Cerdas**
-- Deteksi kematangan semangka dengan akurasi tinggi menggunakan multiple AI providers (Gemini, GPT-4, Claude)
-- Penilaian tingkat kemanisan (1-10), jenis semangka, dan kualitas kulit
+- Deteksi otomatis jenis buah (semangka atau melon) dengan akurasi tinggi
+- Analisis kematangan menggunakan multiple AI providers (Gemini, GPT-4, Claude)
+- Penilaian tingkat kemanisan (1-10), varietas buah, dan kualitas kulit
+- Mendukung berbagai varietas: Semangka (merah, kuning, mini, inul) & Melon (Sky Rocket, Honeydew, Golden Prize, Rock Melon, Action, Apollo)
 - Fallback otomatis antar AI provider untuk reliability maksimal
 
 📱 **Mobile-First & PWA**
@@ -495,14 +498,21 @@ Gunakan [Conventional Commits](https://www.conventionalcommits.org/):
 
 ## 🗺️ Roadmap
 
-### Phase 1: MVP (Completed ✅)
+### Version 1.0.0 - MVP (Released ✅)
 - [x] Camera capture & image upload
-- [x] AI analysis dengan multiple providers
+- [x] AI analysis untuk semangka dengan multiple providers
 - [x] Offline mode dengan sync
 - [x] Analytics dashboard
 - [x] PWA support
 
-### Phase 2: Enhancement (In Progress 🚧)
+### Version 1.1.0 - Melon Support (Current 🎉)
+- [x] Deteksi otomatis semangka vs melon
+- [x] Analisis melon dengan indikator spesifik (slip scar, netting, dll)
+- [x] Support 10+ varietas melon (Sky Rocket, Honeydew, Golden Prize, dll)
+- [x] Database migration untuk backward compatibility
+- [x] UI dinamis untuk semangka & melon
+
+### Phase 2: Enhancement (Planned 📋)
 - [ ] User authentication & profiles
 - [ ] Batch analysis (multiple images)
 - [ ] Advanced analytics dengan ML insights

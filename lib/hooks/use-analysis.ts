@@ -301,7 +301,7 @@ export function useAnalysis(): UseAnalysisReturn {
 
       // Stage 4: Analyze ripeness with AI
       updateStage('analyzing-ripeness', 'Menganalisis kematangan...');
-      toast.loading('Menganalisis kematangan semangka...', { id: 'analysis-flow' });
+      toast.loading('Menganalisis kematangan...', { id: 'analysis-flow' });
 
       const result = await analyzeImageWithAI(imageUrl, userId, metadata);
 

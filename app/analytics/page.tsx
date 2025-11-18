@@ -57,7 +57,8 @@ interface FilterState {
   startDate: string;
   endDate: string;
   location: string;
-  watermelonType: string;
+  fruitType: string;
+  fruitVariety: string;
 }
 
 // Color palette for charts
@@ -81,7 +82,8 @@ export default function AnalyticsPage() {
     startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] || '',
     endDate: new Date().toISOString().split('T')[0] || '',
     location: '',
-    watermelonType: '',
+    fruitType: '',
+    fruitVariety: '',
   });
 
   const fetchAnalytics = async () => {
@@ -96,8 +98,11 @@ export default function AnalyticsPage() {
       if (filters.location) {
         params.append('location', filters.location);
       }
-      if (filters.watermelonType) {
-        params.append('watermelonType', filters.watermelonType);
+      if (filters.fruitType) {
+        params.append('fruitType', filters.fruitType);
+      }
+      if (filters.fruitVariety) {
+        params.append('fruitVariety', filters.fruitVariety);
       }
 
       const response = await fetch(`/api/analytics?${params.toString()}`);
@@ -134,7 +139,8 @@ export default function AnalyticsPage() {
       startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] || '',
       endDate: new Date().toISOString().split('T')[0] || '',
       location: '',
-      watermelonType: '',
+      fruitType: '',
+      fruitVariety: '',
     });
   };
 
@@ -151,7 +157,8 @@ export default function AnalyticsPage() {
           startDate: filters.startDate,
           endDate: filters.endDate,
           location: filters.location || undefined,
-          watermelonType: filters.watermelonType || undefined,
+          fruitType: filters.fruitType || undefined,
+          fruitVariety: filters.fruitVariety || undefined,
         }),
       });
 
@@ -294,21 +301,33 @@ export default function AnalyticsPage() {
             </div>
             
             <div className="space-y-2">
-              <label htmlFor="watermelonType" className="text-sm font-medium">
-                Jenis Semangka
+              <label htmlFor="fruitType" className="text-sm font-medium">
+                Jenis Buah
               </label>
               <select
-                id="watermelonType"
-                value={filters.watermelonType}
-                onChange={(e) => setFilters({ ...filters, watermelonType: e.target.value })}
+                id="fruitType"
+                value={filters.fruitType}
+                onChange={(e) => setFilters({ ...filters, fruitType: e.target.value })}
                 className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
               >
-                <option value="">Semua jenis</option>
-                <option value="merah">Merah</option>
-                <option value="kuning">Kuning</option>
-                <option value="mini">Mini</option>
-                <option value="inul">Inul</option>
+                <option value="">Semua buah</option>
+                <option value="semangka">Semangka</option>
+                <option value="melon">Melon</option>
               </select>
+            </div>
+            
+            <div className="space-y-2">
+              <label htmlFor="fruitVariety" className="text-sm font-medium">
+                Varietas
+              </label>
+              <input
+                id="fruitVariety"
+                type="text"
+                placeholder="Contoh: sky rocket, merah, honeydew"
+                value={filters.fruitVariety}
+                onChange={(e) => setFilters({ ...filters, fruitVariety: e.target.value })}
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              />
             </div>
           </div>
           

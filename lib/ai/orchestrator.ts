@@ -69,9 +69,9 @@ export class AIProviderManager {
   }
 
   /**
-   * Analyze watermelon image with automatic fallback and retry
+   * Analyze watermelon or melon image with automatic fallback and retry
    * 
-   * @param imageUrl - Public URL of the watermelon image
+   * @param imageUrl - Public URL of the watermelon/melon image
    * @returns Analysis result with maturity status, confidence, sweetness, etc.
    * @throws {AIServiceError} When all AI providers fail
    */
@@ -309,17 +309,19 @@ export class AIProviderManager {
 export const aiOrchestrator = new AIProviderManager();
 
 /**
- * Convenience function for analyzing watermelon images
+ * Convenience function for analyzing watermelon or melon images
  * 
- * @param imageUrl - Public URL of the watermelon image
+ * @param imageUrl - Public URL of the watermelon/melon image
  * @returns Analysis result
  * 
  * @example
  * ```typescript
  * const result = await analyzeImage('https://example.com/watermelon.jpg');
+ * console.log(result.fruitType); // 'semangka', 'melon', or 'lainnya'
  * console.log(result.maturityStatus); // 'Matang' or 'Belum Matang'
  * console.log(result.confidence); // 0-100
  * console.log(result.sweetnessLevel); // 1-10
+ * console.log(result.fruitVariety); // e.g., 'sky rocket', 'merah', etc.
  * ```
  */
 export async function analyzeImage(imageUrl: string): Promise<AnalysisOutput> {

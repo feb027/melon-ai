@@ -63,10 +63,11 @@ export async function GET(request: NextRequest) {
     const startDate = searchParams.get('startDate') || 
       new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
     const location = searchParams.get('location');
-    const watermelonType = searchParams.get('watermelonType');
+    const fruitType = searchParams.get('fruitType'); // 'semangka' or 'melon'
+    const fruitVariety = searchParams.get('fruitVariety'); // specific variety
     
     // Generate cache key based on parameters
-    const cacheKey = `analytics:${startDate}:${endDate}:${location || 'all'}:${watermelonType || 'all'}`;
+    const cacheKey = `analytics:${startDate}:${endDate}:${location || 'all'}:${fruitType || 'all'}:${fruitVariety || 'all'}`;
     
     // Try to get from cache (if KV is available)
     if (kv) {
@@ -98,8 +99,13 @@ export async function GET(request: NextRequest) {
     if (location) {
       query = query.eq('metadata->>location', location);
     }
-    if (watermelonType) {
-      query = query.eq('watermelon_type', watermelonType);
+    if (fruitType) {
+      // Filter by fruit type (stored as "fruitType:variety")
+      query = query.like('watermelon_type', `${fruitType}:%`);
+    }
+    if (fruitVariety) {
+      // Filter by specific variety
+      query = query.like('watermelon_type', `%:${fruitVariety}`);
     }
     
     const { data: analyses, error } = await query;
@@ -151,14 +157,16 @@ export async function GET(request: NextRequest) {
       (analyses.reduce((sum, a) => sum + (a.confidence || 0), 0) / totalAnalyses) * 100
     ) / 100;
     
-    // Calculate type distribution
-    const typeCount = analyses.reduce((acc, a) => {
-      const type = a.watermelon_type as string;
-      acc[type] = (acc[type] || 0) + 1;
+    // Calculate variety distribution (parse from "fruitType:variety" format)
+    const varietyCount = analyses.reduce((acc, a) => {
+      const stored = a.watermelon_type as string;
+      const [, variety] = stored.split(':');
+      const key = variety || stored; // Fallback for old data without colon
+      acc[key] = (acc[key] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
     
-    const typeDistribution = Object.entries(typeCount)
+    const typeDistribution = Object.entries(varietyCount)
       .map(([type, count]) => ({
         type,
         count: count as number,

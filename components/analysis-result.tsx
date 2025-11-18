@@ -60,15 +60,37 @@ export function AnalysisResult({ result, onRetry, onFeedback }: AnalysisResultPr
     }
   };
   
-  // Format watermelon type for display
-  const formatWatermelonType = (type: string) => {
+  // Format fruit type for display
+  const formatFruitType = (type: string) => {
     const typeMap: Record<string, string> = {
+      semangka: 'Semangka',
+      melon: 'Melon',
+      lainnya: 'Lainnya',
+    };
+    return typeMap[type] || type;
+  };
+  
+  // Format fruit variety for display
+  const formatFruitVariety = (variety: string) => {
+    const varietyMap: Record<string, string> = {
+      // Watermelon
       merah: 'Merah',
       kuning: 'Kuning',
       mini: 'Mini',
       inul: 'Inul',
+      // Melon
+      'sky rocket': 'Sky Rocket',
+      honeydew: 'Honeydew',
+      'golden prize': 'Golden Prize',
+      'rock melon': 'Rock Melon',
+      action: 'Action',
+      apollo: 'Apollo',
+      'hijau dengan jaring': 'Hijau dengan Jaring',
+      'hijau mulus': 'Hijau Mulus',
+      'kuning mulus': 'Kuning Mulus',
+      lainnya: 'Lainnya',
     };
-    return typeMap[type] || type;
+    return varietyMap[variety.toLowerCase()] || variety;
   };
   
   // Format date
@@ -86,11 +108,25 @@ export function AnalysisResult({ result, onRetry, onFeedback }: AnalysisResultPr
       </CardHeader>
       
       <CardContent className="space-y-6">
+        {/* Fruit Type Badge */}
+        {result.fruitType && (
+          <div className="flex items-center gap-2">
+            <Badge variant="outline" className="text-sm">
+              {formatFruitType(result.fruitType)}
+            </Badge>
+            {result.fruitType === 'lainnya' && result.detectedObject && (
+              <span className="text-sm text-muted-foreground">
+                Terdeteksi: {result.detectedObject}
+              </span>
+            )}
+          </div>
+        )}
+        
         {/* Image Thumbnail */}
         <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-muted">
           <Image
             src={result.imageUrl}
-            alt="Foto semangka yang dianalisis"
+            alt={`Foto ${formatFruitType(result.fruitType || 'buah')} yang dianalisis`}
             fill
             className="object-cover"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -141,12 +177,14 @@ export function AnalysisResult({ result, onRetry, onFeedback }: AnalysisResultPr
           </div>
         </div>
         
-        {/* Watermelon Type and Skin Quality */}
+        {/* Fruit Variety and Skin Quality */}
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-1">
-            <span className="text-sm text-muted-foreground">Jenis Semangka</span>
-            <p className="text-base font-medium capitalize">
-              {formatWatermelonType(result.watermelonType)}
+            <span className="text-sm text-muted-foreground">
+              {result.fruitType === 'melon' ? 'Varietas Melon' : 'Jenis Semangka'}
+            </span>
+            <p className="text-base font-medium">
+              {formatFruitVariety(result.fruitVariety)}
             </p>
           </div>
           
@@ -209,8 +247,10 @@ export function AnalysisResult({ result, onRetry, onFeedback }: AnalysisResultPr
                       <span className="font-medium">{result.sweetnessLevel}/10</span>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Jenis:</span>{' '}
-                      <span className="font-medium capitalize">{formatWatermelonType(result.watermelonType)}</span>
+                      <span className="text-muted-foreground">
+                        {result.fruitType === 'melon' ? 'Varietas:' : 'Jenis:'}
+                      </span>{' '}
+                      <span className="font-medium">{formatFruitVariety(result.fruitVariety)}</span>
                     </div>
                   </div>
                 </div>

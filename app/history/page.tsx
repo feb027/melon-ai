@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AnalysisResult } from '@/components/analysis-result';
-import type { Analysis, MaturityStatus, WatermelonType, SkinQuality, AnalysisMetadata } from '@/lib/types';
+import type { Analysis, MaturityStatus, FruitType, FruitVariety, SkinQuality, AnalysisMetadata } from '@/lib/types';
 
 interface HistoryResponse {
   success: boolean;
@@ -296,10 +296,11 @@ export default function HistoryPage() {
                   userId: selectedAnalysis.user_id,
                   imageUrl: selectedAnalysis.image_url,
                   imageStoragePath: selectedAnalysis.image_storage_path,
+                  fruitType: (selectedAnalysis.watermelon_type?.split(':')[0] || 'semangka') as FruitType,
                   maturityStatus: selectedAnalysis.maturity_status as MaturityStatus,
                   confidence: Number(selectedAnalysis.confidence),
                   sweetnessLevel: selectedAnalysis.sweetness_level,
-                  watermelonType: selectedAnalysis.watermelon_type as WatermelonType,
+                  fruitVariety: (selectedAnalysis.watermelon_type?.split(':')[1] || selectedAnalysis.watermelon_type) as FruitVariety,
                   skinQuality: selectedAnalysis.skin_quality as SkinQuality,
                   aiProvider: selectedAnalysis.ai_provider,
                   aiResponseTime: selectedAnalysis.ai_response_time,

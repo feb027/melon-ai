@@ -106,6 +106,36 @@ export type Database = {
           },
         ]
       }
+      error_logs: {
+        Row: {
+          context: string | null
+          created_at: string | null
+          id: string
+          level: string
+          message: string
+          metadata: Json | null
+          timestamp: string
+        }
+        Insert: {
+          context?: string | null
+          created_at?: string | null
+          id?: string
+          level: string
+          message: string
+          metadata?: Json | null
+          timestamp?: string
+        }
+        Update: {
+          context?: string | null
+          created_at?: string | null
+          id?: string
+          level?: string
+          message?: string
+          metadata?: Json | null
+          timestamp?: string
+        }
+        Relationships: []
+      }
       feedbacks: {
         Row: {
           actual_maturity: string | null
@@ -114,7 +144,7 @@ export type Database = {
           id: string
           is_accurate: boolean
           notes: string | null
-          user_id: string
+          user_id: string | null
         }
         Insert: {
           actual_maturity?: string | null
@@ -123,7 +153,7 @@ export type Database = {
           id?: string
           is_accurate: boolean
           notes?: string | null
-          user_id: string
+          user_id?: string | null
         }
         Update: {
           actual_maturity?: string | null
@@ -132,7 +162,7 @@ export type Database = {
           id?: string
           is_accurate?: boolean
           notes?: string | null
-          user_id?: string
+          user_id?: string | null
         }
         Relationships: [
           {

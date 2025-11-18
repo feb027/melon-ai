@@ -155,7 +155,8 @@ interface ReportData {
   };
   filters: {
     location: string;
-    watermelonType: string;
+    fruitType: string;
+    fruitVariety: string;
   };
   summary: {
     totalAnalyses: number;
@@ -178,7 +179,7 @@ interface ReportData {
     maturityStatus: string;
     confidence: number;
     sweetnessLevel: number;
-    watermelonType: string;
+    fruitVariety: string;
     skinQuality: string;
   }>;
 }
@@ -210,8 +211,12 @@ export function AnalyticsReportDocument({ data }: AnalyticsReportDocumentProps) 
           <Text style={styles.value}>{data.filters.location}</Text>
         </View>
         <View style={styles.row}>
-          <Text style={styles.label}>Jenis Semangka:</Text>
-          <Text style={styles.value}>{data.filters.watermelonType}</Text>
+          <Text style={styles.label}>Jenis Buah:</Text>
+          <Text style={styles.value}>{data.filters.fruitType}</Text>
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.label}>Varietas:</Text>
+          <Text style={styles.value}>{data.filters.fruitVariety}</Text>
         </View>
       </View>
 
@@ -296,7 +301,7 @@ export function AnalyticsReportDocument({ data }: AnalyticsReportDocumentProps) 
               <Text style={[styles.tableCell, { width: '18%' }]}>{analysis.maturityStatus}</Text>
               <Text style={[styles.tableCell, { width: '15%' }]}>{analysis.confidence}%</Text>
               <Text style={[styles.tableCell, { width: '15%' }]}>{analysis.sweetnessLevel}/10</Text>
-              <Text style={[styles.tableCell, { width: '17%' }]}>{analysis.watermelonType}</Text>
+              <Text style={[styles.tableCell, { width: '17%' }]}>{analysis.fruitVariety}</Text>
               <Text style={[styles.tableCell, { width: '20%' }]}>{analysis.skinQuality}</Text>
             </View>
           ))}

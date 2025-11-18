@@ -149,18 +149,18 @@ export async function POST(request: NextRequest) {
       aiProvider = 'gemini'; // This will be updated when we enhance the orchestrator
       
       console.log(`[Analysis API] AI analysis completed in ${aiResponseTime}ms`);
-      console.log(`[Analysis API] Result: ${aiResult.maturityStatus} (${aiResult.confidence}% confidence)`);
+      console.log(`[Analysis API] Result: ${aiResult.fruitType} - ${aiResult.maturityStatus} (${aiResult.confidence}% confidence)`);
       
-      // Check if the detected object is a watermelon
-      if (!aiResult.isWatermelon) {
-        console.log(`[Analysis API] Not a watermelon detected: ${aiResult.detectedObject}`);
+      // Check if the detected object is a watermelon or melon
+      if (aiResult.fruitType === 'lainnya') {
+        console.log(`[Analysis API] Not a watermelon/melon detected: ${aiResult.detectedObject}`);
         
         return NextResponse.json(
           {
             success: false,
             error: {
-              code: 'NOT_A_WATERMELON',
-              message: 'Objek yang terdeteksi bukan semangka.',
+              code: 'NOT_A_FRUIT',
+              message: 'Objek yang terdeteksi bukan semangka atau melon.',
               detectedObject: aiResult.detectedObject || 'Objek tidak dikenali',
               reasoning: aiResult.reasoning,
             },
@@ -205,7 +205,9 @@ export async function POST(request: NextRequest) {
         maturity_status: aiResult.maturityStatus,
         confidence: aiResult.confidence,
         sweetness_level: aiResult.sweetnessLevel,
-        watermelon_type: aiResult.watermelonType,
+        // Store fruit variety in watermelon_type field (will be migrated later)
+        // Format: "fruitType:variety" e.g., "melon:sky rocket" or "semangka:merah"
+        watermelon_type: `${aiResult.fruitType}:${aiResult.fruitVariety}`,
         skin_quality: aiResult.skinQuality,
         ai_provider: aiProvider,
         ai_response_time: aiResponseTime,
@@ -234,6 +236,9 @@ export async function POST(request: NextRequest) {
     const totalTime = Date.now() - startTime;
     console.log(`[Analysis API] ✓ Analysis completed successfully in ${totalTime}ms`);
 
+    // Parse fruit type and variety from stored format
+    const [fruitType, fruitVariety] = (analysisData.watermelon_type || ':').split(':');
+    
     // Return success response with analysis result
     return NextResponse.json(
       {
@@ -243,10 +248,12 @@ export async function POST(request: NextRequest) {
           userId: analysisData.user_id,
           imageUrl: analysisData.image_url,
           imageStoragePath: analysisData.image_storage_path,
+          fruitType: fruitType as 'semangka' | 'melon' | 'lainnya',
+          detectedObject: aiResult.detectedObject,
           maturityStatus: analysisData.maturity_status,
           confidence: analysisData.confidence,
           sweetnessLevel: analysisData.sweetness_level,
-          watermelonType: analysisData.watermelon_type,
+          fruitVariety: fruitVariety || analysisData.watermelon_type, // Fallback for old data
           skinQuality: analysisData.skin_quality,
           aiProvider: analysisData.ai_provider,
           aiResponseTime: analysisData.ai_response_time,

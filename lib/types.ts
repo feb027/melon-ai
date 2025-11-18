@@ -22,19 +22,40 @@ export type UserUpdate = TablesUpdate<'users'>;
 // Analysis Types
 // ============================================================================
 
+export type FruitType = 'semangka' | 'melon' | 'lainnya';
 export type MaturityStatus = 'Matang' | 'Belum Matang';
-export type WatermelonType = 'merah' | 'kuning' | 'mini' | 'inul';
 export type SkinQuality = 'baik' | 'sedang' | 'kurang baik';
+
+// Watermelon varieties
+export type WatermelonVariety = 'merah' | 'kuning' | 'mini' | 'inul';
+
+// Melon varieties (Indonesian market)
+export type MelonVariety = 
+  | 'sky rocket'      // Most popular in Indonesia
+  | 'honeydew'        // Smooth green skin
+  | 'golden prize'    // Bright yellow/orange
+  | 'rock melon'      // Cantaloupe type
+  | 'action'          // Hybrid variety
+  | 'apollo'          // Hybrid variety
+  | 'hijau dengan jaring'  // Generic: green with netting
+  | 'hijau mulus'          // Generic: smooth green
+  | 'kuning mulus'         // Generic: smooth yellow
+  | 'lainnya';             // Other varieties
+
+// Combined fruit variety type
+export type FruitVariety = WatermelonVariety | MelonVariety | string;
 
 export interface AnalysisResult {
   id: string;
   userId: string | null;
   imageUrl: string;
   imageStoragePath: string;
+  fruitType: FruitType;
+  detectedObject?: string; // If fruitType is 'lainnya'
   maturityStatus: MaturityStatus;
   confidence: number; // 0-100
   sweetnessLevel: number; // 1-10
-  watermelonType: WatermelonType;
+  fruitVariety: FruitVariety;
   skinQuality: SkinQuality;
   aiProvider: string;
   aiResponseTime: number; // milliseconds
@@ -81,13 +102,15 @@ export interface AnalyticsData {
   totalAnalyses: number;
   maturityRate: number; // percentage
   averageSweetness: number;
-  typeDistribution: Record<WatermelonType, number>;
+  fruitTypeDistribution: Record<FruitType, number>;
+  varietyDistribution: Record<string, number>;
   trendData: Array<{ date: string; maturityRate: number }>;
 }
 
 export interface AnalyticsFilters {
   location?: string;
-  watermelonType?: WatermelonType;
+  fruitType?: FruitType;
+  fruitVariety?: string;
   startDate?: Date;
   endDate?: Date;
 }
@@ -235,12 +258,12 @@ export interface AIAnalysisInput {
 }
 
 export interface AIAnalysisOutput {
-  isWatermelon: boolean;
+  fruitType: FruitType;
   detectedObject?: string;
   maturityStatus: MaturityStatus;
   confidence: number;
   sweetnessLevel: number;
-  watermelonType: WatermelonType;
+  fruitVariety: string;
   skinQuality: SkinQuality;
   reasoning: string;
 }
