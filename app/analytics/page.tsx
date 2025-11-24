@@ -56,7 +56,6 @@ interface AnalyticsData {
 interface FilterState {
   startDate: string;
   endDate: string;
-  location: string;
   fruitType: string;
   fruitVariety: string;
 }
@@ -81,7 +80,6 @@ export default function AnalyticsPage() {
   const [filters, setFilters] = useState<FilterState>({
     startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] || '',
     endDate: new Date().toISOString().split('T')[0] || '',
-    location: '',
     fruitType: '',
     fruitVariety: '',
   });
@@ -95,9 +93,6 @@ export default function AnalyticsPage() {
       params.append('startDate', new Date(filters.startDate).toISOString());
       params.append('endDate', new Date(filters.endDate).toISOString());
       
-      if (filters.location) {
-        params.append('location', filters.location);
-      }
       if (filters.fruitType) {
         params.append('fruitType', filters.fruitType);
       }
@@ -138,7 +133,6 @@ export default function AnalyticsPage() {
     setFilters({
       startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] || '',
       endDate: new Date().toISOString().split('T')[0] || '',
-      location: '',
       fruitType: '',
       fruitVariety: '',
     });
@@ -156,7 +150,6 @@ export default function AnalyticsPage() {
         body: JSON.stringify({
           startDate: filters.startDate,
           endDate: filters.endDate,
-          location: filters.location || undefined,
           fruitType: filters.fruitType || undefined,
           fruitVariety: filters.fruitVariety || undefined,
         }),
@@ -282,20 +275,6 @@ export default function AnalyticsPage() {
                 type="date"
                 value={filters.endDate}
                 onChange={(e) => setFilters({ ...filters, endDate: e.target.value })}
-                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <label htmlFor="location" className="text-sm font-medium">
-                Lokasi
-              </label>
-              <input
-                id="location"
-                type="text"
-                placeholder="Semua lokasi"
-                value={filters.location}
-                onChange={(e) => setFilters({ ...filters, location: e.target.value })}
                 className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
               />
             </div>

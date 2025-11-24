@@ -44,13 +44,21 @@ export async function getSystemMetrics(timeRange: '1h' | '24h' | '7d' | '30d' = 
   }
 
   try {
+    console.log('[Metrics] Fetching AI performance logs from:', startTime.toISOString());
+    
     // Get AI performance logs
     const { data: aiLogs, error: aiError } = await supabase
       .from('ai_performance_logs')
       .select('*')
-      .gte('timestamp', startTime.toISOString());
+      .gte('timestamp', startTime.toISOString())
+      .order('timestamp', { ascending: false });
 
-    if (aiError) throw aiError;
+    if (aiError) {
+      console.error('[Metrics] Error fetching AI logs:', aiError);
+      throw aiError;
+    }
+    
+    console.log('[Metrics] Fetched', aiLogs?.length || 0, 'AI performance logs');
 
     // Calculate metrics
     const totalAnalyses = aiLogs?.length || 0;
@@ -106,16 +114,23 @@ export async function getRecentErrors(limit: number = 50) {
   const supabase = createClient();
   
   try {
+    console.log('[Metrics] Fetching recent error logs, limit:', limit);
+    
     const { data, error } = await supabase
       .from('error_logs')
       .select('*')
       .order('timestamp', { ascending: false })
       .limit(limit);
 
-    if (error) throw error;
+    if (error) {
+      console.error('[Metrics] Error fetching error logs:', error);
+      throw error;
+    }
+    
+    console.log('[Metrics] Fetched', data?.length || 0, 'error logs');
     return data || [];
   } catch (error) {
-    console.error('Error fetching error logs:', error);
+    console.error('[Metrics] Error fetching error logs:', error);
     return [];
   }
 }

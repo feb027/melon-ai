@@ -60,3 +60,11 @@ bun.lockb
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Test files
+test-supabase.js
+test-postgrest.js
+test-*.js
+
+# Mockup pages (for development only)
+/app/mockup/
