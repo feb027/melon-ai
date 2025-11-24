@@ -13,7 +13,7 @@
 
 **MelonAI** adalah aplikasi Progressive Web App (PWA) mobile-first yang memanfaatkan cloud computing dan AI vision untuk membantu petani dan pedagang menilai kematangan dan kualitas semangka & melon secara objektif tanpa harus membelahnya.
 
-[Demo](https://melon-ai.vercel.app) • [Dokumentasi](#dokumentasi) • [Roadmap](#roadmap)
+[Demo](https://melon-ai-five.vercel.app) • [Dokumentasi](#dokumentasi) • [Roadmap](#roadmap)
 
 </div>
 
