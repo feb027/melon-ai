@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -72,6 +73,9 @@ const COLORS = {
 const PIE_COLORS = [COLORS.primary, COLORS.secondary, COLORS.tertiary, COLORS.quaternary, COLORS.quinary];
 
 export default function AnalyticsPage() {
+  const searchParams = useSearchParams();
+  const isEmptyPreview = searchParams.get('preview') === 'empty';
+  
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [insights, setInsights] = useState<Insight[]>([]);
   const [loading, setLoading] = useState(true);
@@ -122,8 +126,24 @@ export default function AnalyticsPage() {
   };
 
   useEffect(() => {
+    // Skip fetch if in empty preview mode
+    if (isEmptyPreview) {
+      setLoading(false);
+      setData({
+        totalAnalyses: 0,
+        maturityRate: 0,
+        averageSweetness: 0,
+        averageConfidence: 0,
+        typeDistribution: [],
+        trendData: [],
+        skinQualityDistribution: [],
+        sweetnessDistribution: [],
+      });
+      setInsights([]);
+      return;
+    }
     fetchAnalytics();
-  }, []);
+  }, [isEmptyPreview]);
 
   const handleApplyFilters = () => {
     fetchAnalytics();
@@ -212,6 +232,35 @@ export default function AnalyticsPage() {
 
   if (!data) {
     return null;
+  }
+
+  // Empty state when no data
+  const isEmpty = data.totalAnalyses === 0;
+
+  if (isEmpty) {
+    return (
+      <div className="container mx-auto p-4 space-y-6">
+        <div>
+          <h1 className="text-3xl font-bold">Dashboard Analitik</h1>
+          <p className="text-muted-foreground">
+            Statistik dan tren analisis semangka & melon
+          </p>
+        </div>
+        
+        <Card>
+          <CardContent className="py-12 text-center">
+            <TrendingUp className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+            <h3 className="text-lg font-semibold mb-2">Belum Ada Data Analitik</h3>
+            <p className="text-muted-foreground mb-4">
+              Belum ada analisis yang dilakukan. Mulai analisis pertama Anda untuk melihat statistik!
+            </p>
+            <Button asChild>
+              <a href="/">Mulai Analisis</a>
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
 
   return (

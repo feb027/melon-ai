@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { Calendar, Filter, Search } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -43,6 +44,9 @@ interface HistoryResponse {
 }
 
 export default function HistoryPage() {
+  const searchParams = useSearchParams();
+  const isEmptyPreview = searchParams.get('preview') === 'empty';
+  
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -98,8 +102,15 @@ export default function HistoryPage() {
 
   // Fetch on mount and when filters change
   useEffect(() => {
+    // Skip fetch if in empty preview mode
+    if (isEmptyPreview) {
+      setLoading(false);
+      setAnalyses([]);
+      setPagination({ total: 0, totalPages: 0, hasNextPage: false, hasPreviousPage: false });
+      return;
+    }
     fetchAnalyses();
-  }, [page, maturityFilter]);
+  }, [page, maturityFilter, isEmptyPreview]);
 
   // Handle analysis click
   const handleAnalysisClick = (analysis: Analysis) => {
