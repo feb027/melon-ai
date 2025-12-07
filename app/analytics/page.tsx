@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -72,7 +72,30 @@ const COLORS = {
 
 const PIE_COLORS = [COLORS.primary, COLORS.secondary, COLORS.tertiary, COLORS.quaternary, COLORS.quinary];
 
+function AnalyticsLoadingSkeleton() {
+  return (
+    <div className="min-h-screen bg-background p-3 space-y-3">
+      <Skeleton className="h-10 w-48" />
+      <div className="grid gap-3 grid-cols-2">
+        <Skeleton className="h-24" />
+        <Skeleton className="h-24" />
+        <Skeleton className="h-24" />
+        <Skeleton className="h-24" />
+      </div>
+      <Skeleton className="h-80" />
+    </div>
+  );
+}
+
 export default function AnalyticsPage() {
+  return (
+    <Suspense fallback={<AnalyticsLoadingSkeleton />}>
+      <AnalyticsContent />
+    </Suspense>
+  );
+}
+
+function AnalyticsContent() {
   const searchParams = useSearchParams();
   const isEmptyPreview = searchParams.get('preview') === 'empty';
   
